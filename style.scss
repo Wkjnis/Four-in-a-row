@@ -74,6 +74,8 @@ body {
     display: grid;
     border: 2vh solid #009acd;
     border-radius: 2vh;
+    outline: 4px solid #009acd;
+    outline-offset: calc(-2vh - 3px);
     grid-template:
         //"drop_0    drop_1    drop_2    drop_3    drop_4    drop_5    drop_6"15vh
         "field_0_0 field_0_1 field_0_2 field_0_3 field_0_4 field_0_5 field_0_6"12vh
