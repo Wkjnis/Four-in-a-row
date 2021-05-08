@@ -39,12 +39,12 @@ select {
 
 /*@media (prefers-reduced-motion: reduce) {
     * {
-          animation-duration: 0.01ms !important;
-          animation-iteration-count: 1 !important;
-          transition-duration: 0.01ms !important;
-          scroll-behavior: auto !important;
-      }
-  }*/
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}*/
 //------------------------------------------------------------------
 body {
     background: linear-gradient( 90deg,#ff61b6, #fbec5d);
@@ -72,8 +72,10 @@ body {
     align-self: center;
     grid-area: field;
     display: grid;
+    border: 2vh solid #009acd;
+    border-radius: 2vh;
     grid-template:
-        "drop_0    drop_1    drop_2    drop_3    drop_4    drop_5    drop_6"15vh
+        //"drop_0    drop_1    drop_2    drop_3    drop_4    drop_5    drop_6"15vh
         "field_0_0 field_0_1 field_0_2 field_0_3 field_0_4 field_0_5 field_0_6"12vh
         "field_1_0 field_1_1 field_1_2 field_1_3 field_1_4 field_1_5 field_1_6 "12vh
         "field_2_0 field_2_1 field_2_2 field_2_3 field_2_4 field_2_5 field_2_6" 12vh
