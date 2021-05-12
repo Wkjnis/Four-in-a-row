@@ -53,9 +53,18 @@ body {
         ". field ."80vh
         /20vw 60vw 20vw
     ;
-    background: linear-gradient( 90deg,#ff61b6, #fbec5d);//сделать анимацию
-    background-size: 200%;
-    animation: body_background 20s ease infinite;
+    //основные цвета:#19C6FF#FFEE00#FF3368 треугольная гармония
+    //побочные цвета:#33FF52#5400FF двойная сплит комплиментарная
+    //Палитра: #33FF52#5400FF#19C6FF#FFEE00#FF3368
+    //варианты цветов:
+    //#CCBA14 #CC1461 #FAF05C #FF618A #fcabbc #fbec5d #D573FA
+    //background: linear-gradient( 45deg,#ee7752, #e73c7e, #23a6d5, #23d5ab);
+    //background: linear-gradient( 45deg, #18F541, #6818F5);
+    //background: linear-gradient( 45deg, #0DFABF, #18F541, #6818F5, #E60DFA);
+    background: linear-gradient( 45deg, #C0FD51, #fbec5d, #CE5DFA, #8468FD);
+    background-size: 400%;
+    animation: body_background 40s linear infinite;
+    
 }
 
 @keyframes body_background{
@@ -74,6 +83,7 @@ body {
     grid-area: drops;
     justify-self: center;
     align-self: end;
+    margin-bottom: 1vh;
     display: grid;
     grid-template:
         "drop_0    drop_1    drop_2    drop_3    drop_4    drop_5    drop_6"11vh
@@ -92,21 +102,21 @@ body {
 @for $i from 0 through 6 {
     .drop_#{$i}:hover {
         opacity: 1;
-        -webkit-filter: drop-shadow(0vh 0vh 0.5vh rgba(0,0,0,0.8));
-        -moz-filter: drop-shadow(0vh 0vh 0.5vh rgba(0,0,0,0.8));
-        -ms-filter: drop-shadow(0vh 0vh 0.5vh rgba(0,0,0,0.8));
-        -o-filter: drop-shadow(0vh 0vh 0.5vh rgba(0,0,0,0.8));
-        filter: drop-shadow(0vh 0vh 0.5vh rgba(0,0,0,0.8));
+        -webkit-filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0,0,0,0.8));
+        -moz-filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0,0,0,0.8));
+        -ms-filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0,0,0,0.8));
+        -o-filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0,0,0,0.8));
+        filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0,0,0,0.8));
     }
 }
 
 @for $i from 0 through 6 {
     .drop_#{$i}:active {
-        -webkit-filter: drop-shadow(0vh 0vh 0.3vh rgba(0,0,0,1));
-        -moz-filter: drop-shadow(0vh 0vh 0.3vh rgba(0,0,0,1));
-        -ms-filter: drop-shadow(0vh 0vh 0.3vh rgba(0,0,0,1));
-        -o-filter: drop-shadow(0vh 0vh 0.3vh rgba(0,0,0,1));
-        filter: drop-shadow(0vh 0vh 0.3vh rgba(0,0,0,1));
+        -webkit-filter: drop-shadow(0.15vh 0.15vh 0.2vh rgba(0,0,0,1));
+        -moz-filter: drop-shadow(0.15vh 0.15vh 0.2vh rgba(0,0,0,1));
+        -ms-filter: drop-shadow(0.15vh 0.15vh 0.2vh rgba(0,0,0,1));
+        -o-filter: drop-shadow(0.15vh 0.15vh 0.2vh rgba(0,0,0,1));
+        filter: drop-shadow(0.15vh 0.15vh 0.2vh rgba(0,0,0,1));
     }
 }
 
@@ -124,22 +134,22 @@ body {
         "field_5_0 field_5_1 field_5_2 field_5_3 field_5_4 field_5_5 field_5_6"11vh
         /11vh      11vh      11vh      11vh      11vh      11vh      11vh        
     ;
-    border: 2vh solid #009acd;
+    border: 2vh solid #19C6FF;
     border-radius: 5.5vh;
-    outline: 4px solid #009acd;
+    outline: 4px solid #19C6FF;
     outline-offset: calc(-2vh - 3px);
-    -webkit-filter: drop-shadow(0vh 0vh 0.4vh rgba(0,0,0,0.8));
-    -moz-filter: drop-shadow(0vh 0vh 0.4vh rgba(0,0,0,0.8));
-    -ms-filter: drop-shadow(0vh 0vh 0.4vh rgba(0,0,0,0.8));
-    -o-filter: drop-shadow(0vh 0vh 0.4vh rgba(0,0,0,0.8));
-    filter: drop-shadow(0vh 0vh 0.4vh rgba(0,0,0,0.8));    
+    -webkit-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
+    -moz-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
+    -ms-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
+    -o-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
+    filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0,0,0,0.8));    
 }
 
 @for $i from 0 through 5 {
     @for $j from 0 through 6 {
         .field_#{$i}_#{$j} {
             grid-area: field_#{$i}_#{$j};
-            outline: 2px solid #009acd;
+            outline: 2px solid #19C6FF;
             outline-offset: -1px;
         }
     }
