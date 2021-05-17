@@ -1,8 +1,8 @@
 //Массив столбцов, с возможность бросать в них фишку
-let dropsArray = [true, true, true, true, true, true, true];
+const dropsArray = [true, true, true, true, true, true, true];
 
 //Массив игрового поля
-let fieldArray = [
+const fieldArray = [
     [0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0],
@@ -63,18 +63,20 @@ function createDropsLayout( currentPlayer ) {
 
 //Функция реализует бросок фишки в стоблец dropsIndex во время хода игрока currentPlayer
 function chipDrop(dropsIndex) {
-    let chip = addChip (dropsIndex, currentPlayer );
-    let fieldCell = getHigestEmptyCell(dropsIndex);
+    //Здесь dropsIndex СТРОКА!!!!!
+    let chip = addChip (+dropsIndex);
+    let fieldRow = getHigestEmptyCell(+dropsIndex);
     //Позиционируем фишку
-    chip.style.top = 11*(fieldCell+1) + 3 +'vh';
+    chip.style.top = 11*(fieldRow + 1) + 3 +'vh';
     //Добавляем фишку в массив игрового поля
-    fieldArray[fieldCell][dropsIndex] = currentPlayer.fieldArrayIndex;
-    disableDropIfFull(dropsIndex);
+    fieldArray[fieldRow][+dropsIndex] = currentPlayer.fieldArrayIndex;
+    disableDropIfFull(+dropsIndex);
+    isGameEnd(fieldRow, +dropsIndex);
     changePlayer();
 }
 
-// Функция добавляет фишку на поле в столбец dropsIndex цвета chipColor и возвращает ее
-function addChip (dropsIndex, currentPlayer ) {
+// Функция добавляет фишку на поле в столбец dropsIndex цвета chipColor из объекта currentPlayer и возвращает ее
+function addChip (dropsIndex)  {
     let chip = document.createElement('div');
     chip.className = `drop_${dropsIndex} added`;
     chip.insertAdjacentHTML("beforeend", `<img class="chip_added" src="${currentPlayer.chipColor}_chip.svg" alt="${currentPlayer.chipColor}_chip">`);
@@ -106,6 +108,7 @@ function disableDropIfFull(dropsIndex) {
     }
 }
 
+//Функция меняет текущего игрока
 function changePlayer() {
     switch (currentPlayer) {
         case player1:
@@ -123,3 +126,102 @@ function changePlayer() {
     } );
 }
 
+//Функция принимает индекс столбца dropsIndex(число) и индекст строки fieldRow(число)
+//и прверяетповлияла ли фишка, размещенная по этим координатам на победу игрока или на ничью
+function isGameEnd(fieldRow, dropsIndex) {
+
+    //Проверка горизонтали
+    let startRow = fieldRow;
+    let startColumn = dropsIndex - 3;
+    let chipColor = fieldArray[fieldRow][dropsIndex];
+    for(let i = 0; i <= 3; i++) {
+        if( fieldArray[startRow][startColumn + i] == chipColor && 
+            fieldArray[startRow][startColumn + 1 + i] == chipColor &&
+            fieldArray[startRow][startColumn + 2 + i] == chipColor &&
+            fieldArray[startRow][startColumn + 3 + i] == chipColor) {
+                alert(currentPlayer.chipColor + 'win');
+                return;
+        }
+    }
+
+    //Проверка вертикали
+    startRow = fieldRow - 3;
+    startColumn = dropsIndex;
+    for(let i = 0; i <= 3; i++) {
+        if( (fieldArray[startRow + i] && fieldArray[startRow + i][startColumn]) == chipColor && 
+            (fieldArray[startRow + 1 + i] && fieldArray[startRow + 1 + i][startColumn]) == chipColor &&
+            (fieldArray[startRow + 2 + i] && fieldArray[startRow + 2 + i][startColumn]) == chipColor &&
+            (fieldArray[startRow + 3 + i] && fieldArray[startRow + 3 + i][startColumn]) == chipColor) {
+                alert(currentPlayer.chipColor + 'win');
+                return;
+        }
+        /* Тоже самое, что и выше, но через опциональную цепочку
+        if( fieldArray[startRow + i]?.[startColumn] == chipColor && 
+            fieldArray[startRow + 1 + i]?.[startColumn] == chipColor &&
+            fieldArray[startRow + 2 + i]?.[startColumn] == chipColor &&
+            fieldArray[startRow + 3 + i]?.[startColumn] == chipColor) {
+                alert(currentPlayer.chipColor + 'win');
+                return;
+        }
+        */
+    }
+
+    //Проверка главной диагонали
+    startRow = fieldRow - 3;
+    startColumn = dropsIndex - 3;
+    for(let i = 0; i <= 3; i++) {
+        if( (fieldArray[startRow + i] && fieldArray[startRow + i][startColumn + i]) == chipColor && 
+            (fieldArray[startRow + 1 + i] && fieldArray[startRow + 1 + i][startColumn + 1 + i]) == chipColor &&
+            (fieldArray[startRow + 2 + i] && fieldArray[startRow + 2 + i][startColumn + 2 + i]) == chipColor &&
+            (fieldArray[startRow + 3 + i] && fieldArray[startRow + 3 + i][startColumn + 3 + i]) == chipColor) {
+                alert(currentPlayer.chipColor + 'win');
+                return;
+        }
+        /* Тоже самое, что и выше, но через опциональную цепочку
+        if( fieldArray[startRow + i]?.[startColumn + i] == chipColor && 
+            fieldArray[startRow + 1 + i]?.[startColumn + 1 + i] == chipColor &&
+            fieldArray[startRow + 2 + i]?.[startColumn + 2 + i] == chipColor &&
+            fieldArray[startRow + 3 + i]?.[startColumn + 3 + i] == chipColor) {
+                alert(currentPlayer.chipColor + 'win');
+                return;
+        }
+        */
+    }
+    
+    //Проверка побочной диагонали
+    startRow = fieldRow - 3;
+    startColumn = dropsIndex + 3;
+    for(let i = 0; i <= 3; i++) {
+        if( (fieldArray[startRow + i] && fieldArray[startRow + i][startColumn - i]) == chipColor && 
+            (fieldArray[startRow + 1 + i] && fieldArray[startRow + 1 + i][startColumn - 1 - i]) == chipColor &&
+            (fieldArray[startRow + 2 + i] && fieldArray[startRow + 2 + i][startColumn - 2 - i]) == chipColor &&
+            (fieldArray[startRow + 3 + i] && fieldArray[startRow + 3 + i][startColumn - 3 - i]) == chipColor) {
+                alert(currentPlayer.chipColor + 'win');
+                return;
+        }
+        /* Тоже самое, что и выше, но через опциональную цепочку
+        if( fieldArray[startRow + i]?.[startColumn - i] == chipColor && 
+            fieldArray[startRow + 1 + i]?.[startColumn - 1 - i] == chipColor &&
+            fieldArray[startRow + 2 + i]?.[startColumn - 2 - i] == chipColor &&
+            fieldArray[startRow + 3 + i]?.[startColumn - 3 - i] == chipColor) {
+                alert(currentPlayer.chipColor + 'win');
+            return;
+        }
+        */
+    }
+
+    //Проверка на ничью
+    let chipsQuantity = 0;
+    fieldArray.forEach( (elem) => {
+        elem.forEach( (value) => {
+            if( value === 0 ) {
+                return;
+            } else {
+                chipsQuantity++;
+            }
+        } );
+    } );
+    if ( chipsQuantity === 42 ) {
+        alert('draw');
+    }
+}
