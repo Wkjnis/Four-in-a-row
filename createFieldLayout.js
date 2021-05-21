@@ -1,3 +1,5 @@
+//'use strict';
+
 //Массив столбцов, с возможность бросать в них фишку
 const dropsArray = [true, true, true, true, true, true, true];
 
@@ -11,27 +13,41 @@ const fieldArray = [
     [0,0,0,0,0,0,0]
 ];
 
+//Класс для создания объектов игроков(экземпляров этого класса)
+class Player {
+    constructor(name, type, chipColor, fieldArrayIndex){
+        this.name = name;
+        this.type = type;
+        this.chipColor = chipColor;
+        this.fieldArrayIndex = fieldArrayIndex;
+    }
+}
+
+//Создание экземпляров класса
+const player1 = new Player('player1', 'player', 'red', 1);
+const player2 = new Player('player2', 'player', 'yellow', 2);
+
 /*
     Объекты со свойствами игроков: цветом фишки:chipColor, именем: name,
     типом игрока('player' или 'computer'): type, индксом для массива игрового поля: fieldArrayIndex
-*/
 const player1 = {
     chipColor: "red",
     name: "player1",
     type: "player",
     fieldArrayIndex: 1
 };
-
 const player2 = {
     chipColor: "yellow",
     name: "player2",
     type: "player",
     fieldArrayIndex: 2
 };
+*/
 
 //Переменная содержащая объект текущего игрока
 let currentPlayer = player1;
 
+//Динамически создаем верстку
 createFieldLayout();
 createDropsLayout(currentPlayer);
 
@@ -54,25 +70,86 @@ function createDropsLayout( currentPlayer ) {
         dropsElem.className = `drop_${i} started`;
         dropsElem.setAttribute('data-index', i);
         dropsElem.insertAdjacentHTML("beforeend", `<img class="chip" src="${currentPlayer.chipColor}_chip.svg" alt="${currentPlayer.chipColor}_chip">`);
-        dropsElem.onclick = () => { 
-            chipDrop(dropsElem.dataset.index);
-        };
+        dropsElem.onclick = chipDrop;
         document.querySelector(".drops").append(dropsElem);
     }
 }
 
 //Функция реализует бросок фишки в стоблец dropsIndex во время хода игрока currentPlayer
-function chipDrop(dropsIndex) {
-    //Здесь dropsIndex СТРОКА!!!!!
-    let chip = addChip (+dropsIndex);
-    let fieldRow = getHigestEmptyCell(+dropsIndex);
-    //Позиционируем фишку
-    chip.style.top = 11*(fieldRow + 1) + 3 +'vh';
+function chipDrop(event) {
+
+    //Отключаем возможность хода
+    disableAllDrops();
+
+    //Сохраняем индекс столбца, куда бросили фишку
+    let dropsIndex = +event.currentTarget.dataset.index;
+
+    //Создаем фишку и добавляем ее
+    let chip = addChip (dropsIndex);
+
+    //Находим ячейку, куда она должна упасть
+    let fieldRow = getHigestEmptyCell(dropsIndex);
+
+    //Фишка будет отпозиционированна сюда:
+    //chip.style.top = 11*(fieldRow + 1) + 3 +'vh';
+
     //Добавляем фишку в массив игрового поля
-    fieldArray[fieldRow][+dropsIndex] = currentPlayer.fieldArrayIndex;
-    disableDropIfFull(+dropsIndex);
-    isGameEnd(fieldRow, +dropsIndex);
-    changePlayer();
+    fieldArray[fieldRow][dropsIndex] = currentPlayer.fieldArrayIndex;
+
+    //Отключаем возможность бросать фишки в этот столбец, если он заполнен
+    disableDropIfFull(dropsIndex);
+
+    //Создаем промис в котором отрисовываем анимацию
+    let promise = new Promise( (resolve, reject) => {
+
+        //Функция для отрисовки прогресса анимации
+        function draw(progress) {
+            chip.style.top = progress*11*(fieldRow+1) + progress*3 + 'vh';
+        }
+
+        //Функция, по возвращаемым значениям которой, и происходит анимация (отскоки)
+        function bounce(timeFraction) {
+            //Цикл не бесконечный, он сработает максимум 4 раза (зависит от того в ком моменте анимации он вызывается)
+            for (let a = 0, b = 1;; a += b, b /= 2) {
+                if ((1 - timeFraction) >= (7 - 4 * a) / 11) {
+                    return 1 - (-Math.pow((11 - 6 * a - 11 * (1 - timeFraction)) / 4, 2) + Math.pow(b, 2));
+                }
+            }
+        }
+
+        //Функция, управляющяя анимацией
+        function animate({timing, draw, duration}) {
+            let start = performance.now();
+            requestAnimationFrame(function animateFrame(time) {
+                let timeFraction = (time - start) / duration;
+                if (timeFraction > 1)timeFraction = 1;
+                let progress = timing(timeFraction);
+                draw(progress);
+                if (timeFraction < 1) {
+                    requestAnimationFrame(animateFrame);
+                }
+                if ( timeFraction == 1 ) {
+                    resolve('done');
+                }
+            });
+        }
+        
+        //Запускаем анимацию
+        animate({timing: bounce, draw: draw, duration: 1000});
+    } );
+
+    //Выполняем действия после отрисовки анимации
+    promise.then( () => {
+
+        //Проверка на победу кого-то или ничью
+        isGameEnd(fieldRow, dropsIndex);
+
+        //Меняем текущего игрока
+        changePlayer();
+
+        //Включаем возможность хода
+        enableAllDrops();
+    } );
 }
 
 // Функция добавляет фишку на поле в столбец dropsIndex цвета chipColor из объекта currentPlayer и возвращает ее
@@ -127,7 +204,7 @@ function changePlayer() {
 }
 
 //Функция принимает индекс столбца dropsIndex(число) и индекст строки fieldRow(число)
-//и прверяетповлияла ли фишка, размещенная по этим координатам на победу игрока или на ничью
+//и прверяет повлияла ли фишка, размещенная по этим координатам на победу игрока или на ничью
 function isGameEnd(fieldRow, dropsIndex) {
 
     //Проверка горизонтали
@@ -224,4 +301,20 @@ function isGameEnd(fieldRow, dropsIndex) {
     if ( chipsQuantity === 42 ) {
         alert('draw');
     }
+}
+
+//Функция отключает возможность броска фишки во все столбцы
+function disableAllDrops() {
+    document.querySelectorAll(`.started`).forEach( (elem) => {
+        elem.style = "pointer-events: none;";
+    });
+}
+
+//Функция включает возможность броска фишки во все столбцы, кроме заполненых
+function enableAllDrops() {
+    document.querySelectorAll(`.started`).forEach( (elem) => {
+        if( dropsArray[elem.dataset.index] ) {
+            elem.style = "pointer-events: auto;";
+        }
+    });
 }

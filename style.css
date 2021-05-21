@@ -1,0 +1,510 @@
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+article > * + * {
+  margin-top: 1em;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/*@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}*/
+body {
+  display: grid;
+  grid-template: ". drops ." 20vh ". field ." 80vh/20vw 60vw 20vw;
+  background: linear-gradient(45deg, #C0FD51, #fbec5d, #CE5DFA, #8468FD);
+  background-size: 400%;
+  animation: body_background 40s linear infinite;
+}
+
+@keyframes body_background {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+.drops {
+  -ms-grid-row: 1;
+  -ms-grid-column: 2;
+  grid-area: drops;
+  justify-self: center;
+  align-self: end;
+  margin-bottom: 1vh;
+  display: grid;
+  grid-template: "drop_0    drop_1    drop_2    drop_3    drop_4    drop_5    drop_6" 11vh/11vh 11vh 11vh 11vh 11vh 11vh 11vh;
+}
+
+.drop_0 {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  grid-area: drop_0;
+  padding: 0.7vh;
+  cursor: pointer;
+}
+
+.drop_1 {
+  -ms-grid-row: 1;
+  -ms-grid-column: 2;
+  grid-area: drop_1;
+  padding: 0.7vh;
+  cursor: pointer;
+}
+
+.drop_2 {
+  -ms-grid-row: 1;
+  -ms-grid-column: 3;
+  grid-area: drop_2;
+  padding: 0.7vh;
+  cursor: pointer;
+}
+
+.drop_3 {
+  -ms-grid-row: 1;
+  -ms-grid-column: 4;
+  grid-area: drop_3;
+  padding: 0.7vh;
+  cursor: pointer;
+}
+
+.drop_4 {
+  -ms-grid-row: 1;
+  -ms-grid-column: 5;
+  grid-area: drop_4;
+  padding: 0.7vh;
+  cursor: pointer;
+}
+
+.drop_5 {
+  -ms-grid-row: 1;
+  -ms-grid-column: 6;
+  grid-area: drop_5;
+  padding: 0.7vh;
+  cursor: pointer;
+}
+
+.drop_6 {
+  -ms-grid-row: 1;
+  -ms-grid-column: 7;
+  grid-area: drop_6;
+  padding: 0.7vh;
+  cursor: pointer;
+}
+
+.started {
+  opacity: 0.3;
+}
+
+.started:hover {
+  opacity: 1;
+  -moz-filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0, 0, 0, 0.8));
+  -ms-filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0, 0, 0, 0.8));
+  -o-filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0, 0, 0, 0.8));
+  filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0, 0, 0, 0.8));
+}
+
+.started:active {
+  -moz-filter: drop-shadow(0.15vh 0.15vh 0.2vh black);
+  -ms-filter: drop-shadow(0.15vh 0.15vh 0.2vh black);
+  -o-filter: drop-shadow(0.15vh 0.15vh 0.2vh black);
+  filter: drop-shadow(0.15vh 0.15vh 0.2vh black);
+}
+
+.field {
+  -ms-grid-row: 2;
+  -ms-grid-column: 2;
+  grid-area: field;
+  justify-self: center;
+  align-self: start;
+  display: grid;
+  grid-template: "field_0_0 field_0_1 field_0_2 field_0_3 field_0_4 field_0_5 field_0_6" 11vh "field_1_0 field_1_1 field_1_2 field_1_3 field_1_4 field_1_5 field_1_6" 11vh "field_2_0 field_2_1 field_2_2 field_2_3 field_2_4 field_2_5 field_2_6" 11vh "field_3_0 field_3_1 field_3_2 field_3_3 field_3_4 field_3_5 field_3_6" 11vh "field_4_0 field_4_1 field_4_2 field_4_3 field_4_4 field_4_5 field_4_6" 11vh "field_5_0 field_5_1 field_5_2 field_5_3 field_5_4 field_5_5 field_5_6" 11vh/11vh 11vh 11vh 11vh 11vh 11vh 11vh;
+  z-index: 10;
+  border: 2vh solid #19C6FF;
+  border-radius: 5.5vh;
+  outline: 4px solid #19C6FF;
+  outline-offset: calc(-2vh - 3px);
+  -moz-filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0, 0, 0, 0.8));
+  -ms-filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0, 0, 0, 0.8));
+  -o-filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0, 0, 0, 0.8));
+  filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0, 0, 0, 0.8));
+}
+
+.field_0_0 {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  grid-area: field_0_0;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_0_1 {
+  -ms-grid-row: 1;
+  -ms-grid-column: 2;
+  grid-area: field_0_1;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_0_2 {
+  -ms-grid-row: 1;
+  -ms-grid-column: 3;
+  grid-area: field_0_2;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_0_3 {
+  -ms-grid-row: 1;
+  -ms-grid-column: 4;
+  grid-area: field_0_3;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_0_4 {
+  -ms-grid-row: 1;
+  -ms-grid-column: 5;
+  grid-area: field_0_4;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_0_5 {
+  -ms-grid-row: 1;
+  -ms-grid-column: 6;
+  grid-area: field_0_5;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_0_6 {
+  -ms-grid-row: 1;
+  -ms-grid-column: 7;
+  grid-area: field_0_6;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_1_0 {
+  -ms-grid-row: 2;
+  -ms-grid-column: 1;
+  grid-area: field_1_0;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_1_1 {
+  -ms-grid-row: 2;
+  -ms-grid-column: 2;
+  grid-area: field_1_1;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_1_2 {
+  -ms-grid-row: 2;
+  -ms-grid-column: 3;
+  grid-area: field_1_2;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_1_3 {
+  -ms-grid-row: 2;
+  -ms-grid-column: 4;
+  grid-area: field_1_3;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_1_4 {
+  -ms-grid-row: 2;
+  -ms-grid-column: 5;
+  grid-area: field_1_4;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_1_5 {
+  -ms-grid-row: 2;
+  -ms-grid-column: 6;
+  grid-area: field_1_5;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_1_6 {
+  -ms-grid-row: 2;
+  -ms-grid-column: 7;
+  grid-area: field_1_6;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_2_0 {
+  -ms-grid-row: 3;
+  -ms-grid-column: 1;
+  grid-area: field_2_0;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_2_1 {
+  -ms-grid-row: 3;
+  -ms-grid-column: 2;
+  grid-area: field_2_1;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_2_2 {
+  -ms-grid-row: 3;
+  -ms-grid-column: 3;
+  grid-area: field_2_2;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_2_3 {
+  -ms-grid-row: 3;
+  -ms-grid-column: 4;
+  grid-area: field_2_3;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_2_4 {
+  -ms-grid-row: 3;
+  -ms-grid-column: 5;
+  grid-area: field_2_4;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_2_5 {
+  -ms-grid-row: 3;
+  -ms-grid-column: 6;
+  grid-area: field_2_5;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_2_6 {
+  -ms-grid-row: 3;
+  -ms-grid-column: 7;
+  grid-area: field_2_6;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_3_0 {
+  -ms-grid-row: 4;
+  -ms-grid-column: 1;
+  grid-area: field_3_0;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_3_1 {
+  -ms-grid-row: 4;
+  -ms-grid-column: 2;
+  grid-area: field_3_1;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_3_2 {
+  -ms-grid-row: 4;
+  -ms-grid-column: 3;
+  grid-area: field_3_2;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_3_3 {
+  -ms-grid-row: 4;
+  -ms-grid-column: 4;
+  grid-area: field_3_3;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_3_4 {
+  -ms-grid-row: 4;
+  -ms-grid-column: 5;
+  grid-area: field_3_4;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_3_5 {
+  -ms-grid-row: 4;
+  -ms-grid-column: 6;
+  grid-area: field_3_5;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_3_6 {
+  -ms-grid-row: 4;
+  -ms-grid-column: 7;
+  grid-area: field_3_6;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_4_0 {
+  -ms-grid-row: 5;
+  -ms-grid-column: 1;
+  grid-area: field_4_0;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_4_1 {
+  -ms-grid-row: 5;
+  -ms-grid-column: 2;
+  grid-area: field_4_1;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_4_2 {
+  -ms-grid-row: 5;
+  -ms-grid-column: 3;
+  grid-area: field_4_2;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_4_3 {
+  -ms-grid-row: 5;
+  -ms-grid-column: 4;
+  grid-area: field_4_3;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_4_4 {
+  -ms-grid-row: 5;
+  -ms-grid-column: 5;
+  grid-area: field_4_4;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_4_5 {
+  -ms-grid-row: 5;
+  -ms-grid-column: 6;
+  grid-area: field_4_5;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_4_6 {
+  -ms-grid-row: 5;
+  -ms-grid-column: 7;
+  grid-area: field_4_6;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_5_0 {
+  -ms-grid-row: 6;
+  -ms-grid-column: 1;
+  grid-area: field_5_0;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_5_1 {
+  -ms-grid-row: 6;
+  -ms-grid-column: 2;
+  grid-area: field_5_1;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_5_2 {
+  -ms-grid-row: 6;
+  -ms-grid-column: 3;
+  grid-area: field_5_2;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_5_3 {
+  -ms-grid-row: 6;
+  -ms-grid-column: 4;
+  grid-area: field_5_3;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_5_4 {
+  -ms-grid-row: 6;
+  -ms-grid-column: 5;
+  grid-area: field_5_4;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_5_5 {
+  -ms-grid-row: 6;
+  -ms-grid-column: 6;
+  grid-area: field_5_5;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.field_5_6 {
+  -ms-grid-row: 6;
+  -ms-grid-column: 7;
+  grid-area: field_5_6;
+  outline: 2px solid #19C6FF;
+  outline-offset: -1px;
+}
+
+.added {
+  position: relative;
+  z-index: 5 !important;
+}
