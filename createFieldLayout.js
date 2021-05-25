@@ -107,6 +107,9 @@ function chipDrop(event) {
             chip.style.top = progress*11*(fieldRow+1) + progress*3 + 'vh';
         }
 
+        //Длительность анимации, зависящяя от высоты падения
+        let duration = Math.pow((2*(fieldRow+1)/9.8),0.5)*1000;
+
         //Функция, по возвращаемым значениям которой, и происходит анимация (отскоки)
         function bounce(timeFraction) {
             //Цикл не бесконечный, он сработает максимум 4 раза (зависит от того в ком моменте анимации он вызывается)
@@ -135,7 +138,7 @@ function chipDrop(event) {
         }
         
         //Запускаем анимацию
-        animate({timing: bounce, draw: draw, duration: 1000});
+        animate({timing: bounce, draw: draw, duration: duration});
     } );
 
     //Выполняем действия после отрисовки анимации
