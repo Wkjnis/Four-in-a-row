@@ -23,9 +23,26 @@ class Player {
     }
 }
 
-//Создание экземпляров класса
-const player1 = new Player('player1', 'player', 'red', 1);
-const player2 = new Player('player2', 'player', 'yellow', 2);
+//Класс для создания объектов настроек(экземпляров этого класса)
+class Settings {
+    constructor(player1Name, player1Color, player2Name, player2Color, opponent){
+        this.player1Name = player1Name;
+        this.player1Color = player1Color;
+        this.player2Name = player2Name;
+        this.player2Color = player2Color;
+        this.opponent = opponent;
+    }
+}
+
+//Ставим обработчики на форму и начальные настройки
+addListenersAndDefaultSettings();
+
+/*Создание экземпляров класса
+Создаются стандартные игроки, как гарантия того, что все будет работать
+Внутри функции startGame они заменяются на пользовательские
+*/
+let player1 = new Player('player1', 'player', 'red', 1);
+let player2 = new Player('player2', 'player', 'yellow', 2);
 
 /*
     Объекты со свойствами игроков: цветом фишки:chipColor, именем: name,
@@ -70,7 +87,7 @@ function createDropsLayout( currentPlayer ) {
         dropsElem.className = `drop_${i} started`;
         dropsElem.setAttribute('data-index', i);
         dropsElem.insertAdjacentHTML("beforeend", `<img class="chip" src="${currentPlayer.chipColor}_chip.svg" alt="${currentPlayer.chipColor}_chip">`);
-        dropsElem.onclick = chipDrop;
+        dropsElem.addEventListener('click', chipDrop);
         document.querySelector(".drops").append(dropsElem);
     }
 }
@@ -320,4 +337,94 @@ function enableAllDrops() {
             elem.style = "pointer-events: auto;";
         }
     });
+}
+
+//Функция связывает input[type="radio"] с соответствующим ему цветовым кружком
+function selectColor(event) {
+    //Не даем пользователям выбрать одинаковый цвет
+    if(event.target.dataset.name === "player1Color") {
+        if(document.querySelector(`input[value=${event.target.dataset.value}][name=player2Color]`).checked === true) {
+            return;
+        }
+    } else {
+        if(document.querySelector(`input[value=${event.target.dataset.value}][name=player1Color]`).checked === true) {
+            return;
+        }
+    }
+    //Меняем нужный нам input[type="radio"] на значение выбранного цвета
+    document.querySelector(`input[value=${event.target.dataset.value}][name=${event.target.dataset.name}]`).checked = true;
+    //Также визуально выделяем кружок с выбранным цветом и убираем выделение с других
+    document.querySelectorAll(`.radioCircle[data-name=${event.target.dataset.name}]`).forEach( (elem) => {
+        if(elem.classList.contains('radioCircleSelected')) {
+            elem.classList.remove('radioCircleSelected');
+        }
+    } );
+    event.target.classList.add('radioCircleSelected');
+}
+
+//Функция связывает input[type="radio"] с соответствующей ему картинкой оппонента 
+function selectOpponent(event) {
+    //Меняем нужный нам input[type="radio"] на значение выбранного оппонента
+    document.querySelector(`input[value=${event.target.dataset.value}][name=${event.target.dataset.name}]`).checked = true;
+    //Также визуально выделяем картинку с выбранным оппонентом и убираем выделение с других
+    document.querySelectorAll(`.opponent`).forEach( (elem) => {
+        if(elem.classList.contains('opponentSelected')) {
+            elem.classList.remove('opponentSelected');
+        }
+    } );
+    event.target.classList.add('opponentSelected');
+}
+
+//Функция сохраняет настройки и начинает игру
+function startGame() {
+    //Сохраняем настройки
+    const form = document.querySelector('form[name=settings]');
+    const settings = new Settings(form.player1Name.value, form.player1Color.value, form.player2Name.value, form.player2Color.value, form.opponent.value);
+    localStorage.setItem('settings', JSON.stringify(settings));
+    //Убираем стартовое модальное окно
+    document.querySelector('.startScreen').style.display = 'none';
+    //Заменяем стандартных игроков на пользовательских 
+    player1 = new Player(form.player1Name.value, 'human', form.player1Color.value, 1);
+    player2 = new Player(form.player2Name.value, form.opponent.value, form.player2Color.value, 2);
+    //Обновляем текущего игрока
+    currentPlayer = player1;
+    //Заменяем стандартные фишки внутри .drops на пользовательскте
+    document.querySelectorAll('.started').forEach( (dropsElem) => {
+        if( dropsArray[dropsElem.dataset.index] ) {
+            dropsElem.querySelector('img').remove();
+            dropsElem.insertAdjacentHTML("beforeend", `<img class="chip" src="${currentPlayer.chipColor}_chip.svg" alt="${currentPlayer.chipColor}_chip">`);
+        }
+    } );
+}
+
+//Функция устанавливает стандартные настройки, а если есть пользоательские, то устанавливает пользовательские и сохраняет их
+function setDefaultSettings() {
+    let defaultSettings = new Settings('player1', 'red', 'player2', 'yellow', 'human');
+    if(!localStorage.getItem('settings')) {
+        localStorage.setItem('settings', JSON.stringify(defaultSettings));
+    } else {
+        defaultSettings = JSON.parse(localStorage.getItem('settings'));
+    }
+    document.querySelector(`input[name=player1Name]`).value = defaultSettings.player1Name;
+    document.querySelector(`input[name=player2Name]`).value = defaultSettings.player2Name;
+    const eventClick = new Event('click');
+    console.log(document.querySelector(`.radioCircle[data-name=player1Color][data-value=${defaultSettings.player1Color}]`));
+    document.querySelector(`.radioCircle[data-name=player1Color][data-value=${defaultSettings.player1Color}]`).dispatchEvent(eventClick);
+    document.querySelector(`.radioCircle[data-name=player2Color][data-value=${defaultSettings.player2Color}]`).dispatchEvent(eventClick);
+    document.querySelector(`.opponent[data-value=${defaultSettings.opponent}]`).dispatchEvent(eventClick);
+}
+
+//Функция ставит обработчики на элементы формы
+function addListenersAndDefaultSettings() {
+    //На картинки для выбора оппонента(режима игры)
+    document.querySelectorAll('.opponent').forEach( (elem) => {
+        elem.addEventListener('click', selectOpponent);
+    } );
+    //На кружки для вобора цвета
+    document.querySelectorAll('.radioCircle').forEach( (elem) => {
+        elem.addEventListener('click', selectColor);
+    } );
+    //На кнопку "Начать игру" в форме
+    document.querySelector('.settings button').addEventListener('click', startGame);
+    setDefaultSettings();
 }

@@ -10,18 +10,18 @@
 <body>
     <div class="startScreen modal">
         <div class="settings">
-            <form name="settings" action="">
+            <form name="settings">
                 <p>Настройки:</p>
                 <fieldset>
                     <legend>Первый игрок</legend>
                     <p>Имя:</p>
-                    <input type="text" value="player1">
+                    <input name="player1Name" type="text" value="">
                     <p>Цвет фишек:</p>
-                    <div class="radioCircle" data-name ="player1Color" data-color="red"></div>
-                    <div class="radioCircle" data-name ="player1Color" data-color="yellow"></div>
-                    <div class="radioCircle" data-name ="player1Color" data-color="green"></div>
-                    <div class="radioCircle" data-name ="player1Color" data-color="purple"></div>
-                    <input class="radioCircleChecked" name="player1Color" type="radio" value="red">
+                    <div class="radioCircle" data-name="player1Color" data-value="red"></div>
+                    <div class="radioCircle" data-name="player1Color" data-value="yellow"></div>
+                    <div class="radioCircle" data-name="player1Color" data-value="green"></div>
+                    <div class="radioCircle" data-name="player1Color" data-value="purple"></div>
+                    <input name="player1Color" type="radio" value="red">
                     <input name="player1Color" type="radio" value="yellow">
                     <input name="player1Color" type="radio" value="green">
                     <input name="player1Color" type="radio" value="purple">
@@ -29,26 +29,23 @@
                 <fieldset>
                     <legend>Второй игрок</legend>
                     <p>Имя:</p>
-                    <input type="text" value="player2">
+                    <input name="player2Name" type="text" value="">
                     <p>Цвет фишек:</p>
-                    <div class="radioCircle" data-name ="player2Color" data-color="red"></div>
-                    <!--<div class="radioCircle radioCircleSelected" data-name ="player2Color" data-color="red"></div>-->
-                    <div class="radioCircle" data-name ="player2Color" data-color="yellow"></div>
-                    <div class="radioCircle" data-name ="player2Color" data-color="green"></div>
-                    <div class="radioCircle" data-name ="player2Color" data-color="purple"></div>
+                    <div class="radioCircle" data-name="player2Color" data-value="red"></div>
+                    <div class="radioCircle" data-name="player2Color" data-value="yellow"></div>
+                    <div class="radioCircle" data-name="player2Color" data-value="green"></div>
+                    <div class="radioCircle" data-name="player2Color" data-value="purple"></div>
                     <input name="player2Color" type="radio" value="red">
                     <input name="player2Color" type="radio" value="yellow">
                     <input name="player2Color" type="radio" value="green">
                     <input name="player2Color" type="radio" value="purple">
                 </fieldset>
                 <p>Игра против:</p>
-                <!--<img class="opponentSelected" src="human.svg" alt="human">-->
-                <img src="human.svg" alt="human">
-                <img src="computer.svg" alt="computer">
+                <img data-name="opponent" data-value="human" class="opponent" src="human.svg" alt="human">
+                <img data-name="opponent" data-value="computer" class="opponent" src="computer.svg" alt="computer">
                 <input name="opponent" type="radio" value="human">
                 <input name="opponent" type="radio" value="computer">
                 <!--https://www.flaticon.com,https://icons8.ru-->
-                <!--Нужно указать type="button" чтобы страница не обновлялась-->
                 <button type="button">Начать игру</button>
             </form>
         </div>

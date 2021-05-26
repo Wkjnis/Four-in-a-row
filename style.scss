@@ -278,22 +278,22 @@ form legend {
     box-shadow:0.2vh 0.2vh 0.3vh rgba(0,0,0,1);
 }
 
-.radioCircle[data-color=red] {
+.radioCircle[data-value=red] {
     background-color: #FF3368;
     border: 2px solid #FF3368;
 }
 
-.radioCircle[data-color=yellow] {
+.radioCircle[data-value=yellow] {
     background-color: #FFEE00;
     border: 2px solid #FFEE00;
 }
 
-.radioCircle[data-color=green] {
+.radioCircle[data-value=green] {
     background-color: #33FF52;
     border: 2px solid #33FF52;
 }
 
-.radioCircle[data-color=purple] {
+.radioCircle[data-value=purple] {
     background-color: #5400FF;
     border: 2px solid #5400FF;
 }
@@ -302,7 +302,7 @@ form legend {
     border: 2px solid #000000!important;
 }
 
-form img {
+.opponent {
     display: inline-block;
     height: 7vh;
     width: 7vh;
@@ -315,7 +315,7 @@ form img {
     cursor: pointer;
 }
 
-form img:hover {
+.opponent:hover {
     -webkit-filter: drop-shadow(0.3vh 0.3vh 0.3vh rgba(0,0,0,0.6));
     -moz-filter: drop-shadow(0.3vh 0.3vh 0.3vh rgba(0,0,0,0.6));
     -ms-filter: drop-shadow(0.3vh 0.3vh 0.3vh rgba(0,0,0,0.6));
@@ -323,7 +323,7 @@ form img:hover {
     filter: drop-shadow(0.3vh 0.3vh 0.3vh rgba(0,0,0,0.6)); 
 }
 
-form img:active {
+.opponent:active {
     -webkit-filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(1,1,1,1));
     -moz-filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(1,1,1,1));
     -ms-filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(1,1,1,1));
@@ -333,7 +333,7 @@ form img:active {
 
 .opponentSelected {
     outline: 2px solid #000000;
-    outline-offset: 2px;
+    outline-offset: 1px;
 }
 
 form button {
