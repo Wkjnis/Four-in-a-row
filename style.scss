@@ -56,15 +56,15 @@ select {
 body {
     display: grid;
     grid-template:
-        ". drops ."20vh
-        ". field ."80vh
+        "score   drops ."20vh
+        "buttons field ."80vh
         /20vw 60vw 20vw
     ;
     background: linear-gradient( 45deg, #C0FD51, #fbec5d, #CE5DFA, #8468FD);
     background-size: 400%;
     animation: body_background 40s linear infinite;
     //font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-    font-family: "Comic Sans MS", cursive;
+    //font-family: "Comic Sans MS", cursive;
 }
 
 @keyframes body_background{
@@ -162,6 +162,7 @@ body {
     z-index: 5 !important;
 }
 
+//Модальные окна
 .modal {
     position: fixed;
     top: 0;
@@ -169,12 +170,13 @@ body {
     right: 0;
     left: 0;
     background-size: 100vh 100vw;
-    background-color: rgba(25, 198, 255, 0.1);
+    background-color: rgba(25, 198, 255, 0.5);
     z-index: 99;
     overflow: hidden;
     -webkit-overflow-scrolling: touch;
 }
 
+//Стартовый экран, модальное окно с настройками и правиами
 .startScreen {
     display: grid;
     justify-content: center;
@@ -187,15 +189,7 @@ body {
     grid-row-gap: 0vh;
 }
 
-.settings {
-    margin: -5.1vh;
-    padding: 5.1vh;
-    border-top-left-radius: 3vh;
-    border-bottom-left-radius: 3vh;
-    background-color: #19C6FF;
-    grid-area: settings;
-}
-
+//Правила
 .rules {
     margin: -5.1vh;
     padding: 5.1vh;
@@ -203,6 +197,16 @@ body {
     border-bottom-right-radius: 3vh;
     background-color: #19C6FF;
     grid-area: rules;
+}
+
+//Настройки
+.settings {
+    margin: -5.1vh;
+    padding: 5.1vh;
+    border-top-left-radius: 3vh;
+    border-bottom-left-radius: 3vh;
+    background-color: #19C6FF;
+    grid-area: settings;
 }
 
 fieldset {
@@ -336,26 +340,167 @@ form legend {
     outline-offset: 1px;
 }
 
-form button {
-    appearance: none;
-    -webkit-appearance: none;
+button {
     padding: 1.5vh;
     border: none;
     background-color: #fff;
-    //color: #ffffff;
     font-weight: 600;
     border-radius: 2vh;
     width: 100%;
     font-size: 3vh;
-    margin-top: 1.5vh;
     box-shadow:0.4vh 0.4vh 0.3vh rgba(0,0,0,0.4);
     cursor: pointer;
 }
 
-form button:hover {
+button:hover {
     box-shadow:0.3vh 0.3vh 0.3vh rgba(0,0,0,0.6);
 }
 
-form button:active {
+button:active {
     box-shadow:0.2vh 0.2vh 0.3vh rgba(0,0,0,1);
+}
+
+form button {
+    margin-top: 1.5vh;
+}
+
+//Область buttons
+.buttons {
+    grid-area: buttons;
+}
+
+.buttons button {
+    margin: 3vh 3vh 6vh 3vh;
+    width: calc(100% - 6vh);
+}
+
+.buttons button:nth-child(1) {
+    margin-top: 10vh;
+}
+
+//Область score
+.score {
+    grid-area: score;
+    margin-top: 3vh;
+    display: grid;
+    grid-template:
+        "player1Score"4vh
+        "player2Score"4vh
+        /35vh
+    ;
+    row-gap: 1vh;
+}
+
+#player1Score, #player2Score {
+    font-size: 3vh;
+    display: inline-block;
+    padding: 0.4vh;
+    margin-left: 3vh;
+}
+
+#player1Score {
+    grid-area: player1Score;
+    justify-self: start;
+}
+#player2Score {
+    grid-area: player2Score;
+    justify-self: start;
+}
+
+#player1Current, #player2Current {
+    width: 4vh;
+    height:4vh;
+    display: inline-block;
+    padding-top: 1vh;
+    -webkit-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
+    -moz-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
+    -ms-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
+    -o-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
+    filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0,0,0,0.8)); 
+    animation: currentPlayerAnimation 2s linear infinite;
+}
+
+@keyframes currentPlayerAnimation{
+    0%{
+        transform: scale(1,1);
+    }
+    25%{
+        transform: scale(1.05,1.05);
+    }
+    50%{
+        transform: scale(1,1);
+    }
+    75%{
+        transform: scale(0.95,0.95);
+    }
+    100%{
+        transform: scale(1,1);
+    }
+}
+
+//Попап
+.popup {
+    position: absolute;
+    width: 30vw;
+    height: 30vh;
+    background-color:rgba(25, 198, 255, 1);
+    border-radius: 2vh;
+    z-index: 999;
+    margin-top: 35vh;
+    margin-bottom: 35vh;
+    margin-left: -100vw;
+    margin-right: 35vw;
+    -webkit-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
+    -moz-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
+    -ms-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
+    -o-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
+    filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0,0,0,0.8));
+    transition: margin-left 0.3s linear;
+}
+
+.popup button {
+    position: absolute;
+    display: inline-block;
+    width: 10vw;
+    bottom: 4vh;
+}
+
+#popupYes {
+    left: 3.3vw;
+}
+
+#popupNo {
+    right: 3.3vw;
+}
+
+#popupQuestion {
+    margin-top: 2vh;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+}
+
+#popupText {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0vh 2vw;
+}
+
+//Экран окончания игры
+.winScreen {
+    display: none;//grid
+    grid-template:
+        "winningPlayer"  25vh
+        "info"           60vh
+        "playAnotherGame"15vh
+        /100vw     
+    ;
+}
+
+#playAnotherGame {
+    grid-area: playAnotherGame;
+    width: 40vh;
+    height: 70%;
+    justify-self: center;
 }

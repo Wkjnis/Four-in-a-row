@@ -15,7 +15,7 @@
                 <fieldset>
                     <legend>Первый игрок</legend>
                     <p>Имя:</p>
-                    <input name="player1Name" type="text" value="">
+                    <input name="player1Name" type="text" maxlength="10" value="">
                     <p>Цвет фишек:</p>
                     <div class="radioCircle" data-name="player1Color" data-value="red"></div>
                     <div class="radioCircle" data-name="player1Color" data-value="yellow"></div>
@@ -29,7 +29,7 @@
                 <fieldset>
                     <legend>Второй игрок</legend>
                     <p>Имя:</p>
-                    <input name="player2Name" type="text" value="">
+                    <input name="player2Name" type="text" maxlength="10" value="">
                     <p>Цвет фишек:</p>
                     <div class="radioCircle" data-name="player2Color" data-value="red"></div>
                     <div class="radioCircle" data-name="player2Color" data-value="yellow"></div>
@@ -59,8 +59,26 @@
             <p>Удачи и веселой игры! :)</p>
         </div>
     </div>
+    <div class="score">
+        <div id="player1Score"></div>
+        <div id="player2Score"></div>
+    </div>
+    <div class="buttons">
+        <button type="button" id="restart">Начать заново</button>
+        <button type="button" id="settings">Настройки</button>
+        <button type="button" id="concede">Сдаться</button>
+    </div>
     <div class="drops"></div>
     <div class="field"></div>
+    <div class="winScreen modal">
+        <button type="button" id="playAnotherGame">Следующяя игра</button>
+    </div>
+    <div class="popup">
+        <p id="popupQuestion"></p>
+        <p id="popupText"></p>
+        <button id="popupYes" data-answer="yes" type="button"></button>
+        <button id="popupNo" data-answer="no" type="button"></button>
+    </div>
     <script src="createFieldLayout.js"></script>
 </body>
 </html>
