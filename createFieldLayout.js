@@ -96,6 +96,8 @@ function createDropsLayout( currentPlayer ) {
 
 //Функция реализует бросок фишки в стоблец dropsIndex во время хода игрока currentPlayer
 function chipDrop(event) {
+    //Отключаем возможность сдаться
+    document.querySelector('#concede').style = "pointer-events: none;";
 
     //Отключаем возможность хода
     disableAllDrops();
@@ -164,7 +166,7 @@ function chipDrop(event) {
     promiseAnimation.then( () => {
 
         //Проверка на победу кого-то или ничью
-        isGameEnd(fieldRow, dropsIndex);
+        let gameEnded = isGameEnd(fieldRow, dropsIndex);
 
         //Меняем текущего игрока
         changePlayer();
@@ -172,8 +174,11 @@ function chipDrop(event) {
         //Включаем возможность хода
         enableAllDrops();
 
+        //Включаем возможность сдаться
+        document.querySelector('#concede').style = "pointer-events: auto;";
+
         //Если 2 игрок это компьютер, то делаем его ход
-        if(currentPlayer.type === 'computer') {
+        if((currentPlayer.type === 'computer') && !gameEnded) {
             makeComputerTurn();
         }
     } );
@@ -230,7 +235,8 @@ function changePlayer() {
 }
 
 //Функция принимает индекс столбца dropsIndex(число) и индекст строки fieldRow(число)
-//и прверяет повлияла ли фишка, размещенная по этим координатам на победу игрока или на ничью
+//и прверяет повлияла ли фишка, размещенная по этим координатам на победу игрока или на ничью, 
+//возвращает true, если игра закончена, иначе false
 function isGameEnd(fieldRow, dropsIndex) {
 
     //Проверка горизонтали
@@ -243,7 +249,7 @@ function isGameEnd(fieldRow, dropsIndex) {
             fieldArray[startRow][startColumn + 2 + i] == chipColor &&
             fieldArray[startRow][startColumn + 3 + i] == chipColor) {
                 win(currentPlayer);
-                return;
+                return true;
         }
     }
 
@@ -256,7 +262,7 @@ function isGameEnd(fieldRow, dropsIndex) {
             (fieldArray[startRow + 2 + i] && fieldArray[startRow + 2 + i][startColumn]) == chipColor &&
             (fieldArray[startRow + 3 + i] && fieldArray[startRow + 3 + i][startColumn]) == chipColor) {
                 win(currentPlayer);
-                return;
+                return true;
         }
         /* Тоже самое, что и выше, но через опциональную цепочку
         if( fieldArray[startRow + i]?.[startColumn] == chipColor && 
@@ -264,7 +270,7 @@ function isGameEnd(fieldRow, dropsIndex) {
             fieldArray[startRow + 2 + i]?.[startColumn] == chipColor &&
             fieldArray[startRow + 3 + i]?.[startColumn] == chipColor) {
                 win(currentPlayer);
-                return;
+                return true;
         }
         */
     }
@@ -286,7 +292,7 @@ function isGameEnd(fieldRow, dropsIndex) {
             fieldArray[startRow + 2 + i]?.[startColumn + 2 + i] == chipColor &&
             fieldArray[startRow + 3 + i]?.[startColumn + 3 + i] == chipColor) {
                 win(currentPlayer);
-                return;
+                return true;
         }
         */
     }
@@ -300,7 +306,7 @@ function isGameEnd(fieldRow, dropsIndex) {
             (fieldArray[startRow + 2 + i] && fieldArray[startRow + 2 + i][startColumn - 2 - i]) == chipColor &&
             (fieldArray[startRow + 3 + i] && fieldArray[startRow + 3 + i][startColumn - 3 - i]) == chipColor) {
                 win(currentPlayer);
-                return;
+                return true;
         }
         /* Тоже самое, что и выше, но через опциональную цепочку
         if( fieldArray[startRow + i]?.[startColumn - i] == chipColor && 
@@ -308,7 +314,7 @@ function isGameEnd(fieldRow, dropsIndex) {
             fieldArray[startRow + 2 + i]?.[startColumn - 2 - i] == chipColor &&
             fieldArray[startRow + 3 + i]?.[startColumn - 3 - i] == chipColor) {
                 win(currentPlayer);
-            return;
+            return true;
         }
         */
     }
@@ -326,7 +332,9 @@ function isGameEnd(fieldRow, dropsIndex) {
     } );
     if ( chipsQuantity === 42 ) {
         win(null);
+        return true;
     }
+    return false;
 }
 
 //Функция отключает возможность броска фишки во все столбцы
@@ -377,12 +385,43 @@ function nameNormalization(event) {
 function selectOpponent(event) {
     //Меняем нужный нам input[type="radio"] на значение выбранного оппонента
     document.querySelector(`input[value=${event.target.dataset.value}][name=${event.target.dataset.name}]`).checked = true;
+    //Берем объект с настройками
+    const settings = JSON.parse(localStorage.getItem('settings'));
+    //Установка корректных значений при нажатии на оппонента "computer"
+    if( event.target.dataset.value === "computer" &&
+    (document.querySelector('input[name=player2Name]').value === 'Игрок2' && settings.opponent === 'computer')
+    ) {
+    document.querySelector('input[name=player2Name]').value = settings.player2Name;
+    }
+
+    if( event.target.dataset.value === "computer" &&
+        (document.querySelector('input[name=player2Name]').value === 'Игрок2' ||
+        (document.querySelector('input[name=player2Name]').value === settings.player2Name && settings.opponent === 'human')
+        )
+    ) {
+        document.querySelector('input[name=player2Name]').value = 'Компьютер';
+    }
+    //Установка корректных значений при нажатии на оппонента "human"
+    if( event.target.dataset.value === "human" &&
+        (document.querySelector('input[name=player2Name]').value === 'Компьютер' && settings.opponent === 'human')
+    ) {
+        document.querySelector('input[name=player2Name]').value = settings.player2Name;
+    }
+
+    if( event.target.dataset.value === "human" &&
+        (document.querySelector('input[name=player2Name]').value === 'Компьютер' ||
+        (document.querySelector('input[name=player2Name]').value === settings.player2Name && settings.opponent === 'computer')
+        )
+    ) {
+        document.querySelector('input[name=player2Name]').value = 'Игрок2';
+    }
     //Также визуально выделяем картинку с выбранным оппонентом и убираем выделение с других
     document.querySelectorAll(`.opponent`).forEach( (elem) => {
         if(elem.classList.contains('opponentSelected')) {
             elem.classList.remove('opponentSelected');
         }
     } );
+    
     event.target.classList.add('opponentSelected');
 }
 
@@ -440,6 +479,8 @@ function addListenersAndDefaultSettings() {
     document.querySelector('#concede').addEventListener('click', concede);
     //На кнопку "Следующяя игра"
     document.querySelector('#playAnotherGame').addEventListener('click', playAnotherGame);
+    //На кнопку открывающую/закрывающую меню
+    document.querySelector('#showButtons').addEventListener('click', showMenu);
     //На поля для ввода имен
     document.querySelectorAll('.settings input[type=text]').forEach( (elem) => {
         elem.addEventListener('blur', nameNormalization);
@@ -450,7 +491,7 @@ function addListenersAndDefaultSettings() {
 
 //Функция устанавливает стандартные настройки и сохраняет их, а если есть пользоательские, то устанавливает пользовательские
 function setDefaultSettings() {
-    let defaultSettings = new Settings('player1', 'red', 'player2', 'yellow', 'human');
+    let defaultSettings = new Settings('Игрок1', 'red', 'Игрок2', 'yellow', 'human');
     if(!localStorage.getItem('settings')) {
         localStorage.setItem('settings', JSON.stringify(defaultSettings));
     } else {
@@ -482,8 +523,8 @@ function computerFirstTurn() {
 //Создаем счет
 function updateScore() {
     //Создаем счет
-    document.querySelector('#player1Score').innerHTML = `${player1.name} : ${player1.score}`;
-    document.querySelector('#player2Score').innerHTML = `${player2.name} : ${player2.score}`;
+    document.querySelector('#player1Score').innerHTML = ` ${player1.name} : ${player1.score}`;
+    document.querySelector('#player2Score').innerHTML = ` ${player2.name} : ${player2.score}`;
     //Создаем блоки с фишками (или меняем), которые будут показывать текущего игрока, при помощи анимации
     if( !document.querySelector('#player1Current') ) {
         const player1Current = document.createElement('div');
@@ -519,6 +560,8 @@ function showPopup(text, question = 'Вы уверенны?', yes = 'Да', no =
         //Функция, дающяя ответ, при нажатии на кнопку
         function answer (event) {
             resolve(event.target.dataset.answer);
+            document.querySelector('#popupYes').removeEventListener('click', answer);
+            document.querySelector('#popupNo').removeEventListener('click', answer);
         }
         //Ставим обработчики на кнопки
         document.querySelector('#popupYes').addEventListener('click', answer);
@@ -538,7 +581,7 @@ function openSettings() {
             //Показываем окно с настройками когда Попап пропадет
             setTimeout( () => {
                 document.querySelector('.startScreen').style.display = 'grid';
-            } , 300);
+            }, 300);
         }
     } );
 }
@@ -584,23 +627,93 @@ function concede() {
     } );
 }
 
-//Функция, вызывающяяся при победе одного из игроков
+//Функция, вызывающяяся при победе одного из игроков, принимает объект класса Player или null
 function win(player) {
+    //Обрабатываем ничью
     if(player === null) {
-        //ДОРАБОТАТЬ НИЧЬЮ
-        alert(draw);
+        //Добавляем картинки фишки и слова "win" соответствующие ничьей
+        document.querySelector('#winningPlayer').insertAdjacentHTML("beforeend",`<img id="winChip" src="drow_chip.svg" alt="drow_chip">`);
+        document.querySelector('#winningPlayer').insertAdjacentHTML("beforeend",`<img id="winWord" src="drow_winWord.svg" alt="drow_winWord">`);
+        //Пишем текстом кто победил и за сколько ходов, с сответствующими условиями
+        const p1 = document.createElement('p');
+        p1.className = 'info';
+        p1.innerHTML = `Ух ты, ничья! На этот раз победила дружба :)`;
+        document.querySelector('.winScreen').append(p1);
+        //Отображаем модальное окно победного экрана
+        document.querySelector('.winScreen').style.display = "grid";
         return;
     }
-    //ДОРАБОТАТЬ
+    //Считаем количество ходов
+    const numberOfTurns = Math.ceil(document.querySelectorAll('.added').length / 2);
+    //В зависимости от количества ходов склоняем слово "ход"
+    let wordTurns = 'ходов';
+    const opponent = player == player1 ? player2 : player1;
+    if(numberOfTurns.toString().slice(-2, -1) !== '1') {
+        switch(numberOfTurns.toString().slice(-1)) {
+            case '1':  
+                wordTurns = 'ход';
+                break;
+            case '2':
+            case '3':
+            case '4':
+                wordTurns = 'хода';
+                break; 
+        }
+    }
+    //Добавляем картинки фишки и слова "win" соответствующего цвета
+    document.querySelector('#winningPlayer').insertAdjacentHTML("beforeend",`<img id="winChip" src="${player.chipColor}_chip.svg" alt="${player.chipColor}_chip">`);
+    document.querySelector('#winningPlayer').insertAdjacentHTML("beforeend",`<img id="winWord" src="${player.chipColor}_winWord.svg" alt="${player.chipColor}_winWord">`);
+    //Пишем текстом кто победил и за сколько ходов, с сответствующими условиями
+    const p1 = document.createElement('p');
+    p1.className = 'info';
+    p1.style.marginBottom = '8vh';
+    if(player.type === 'human') { 
+        p1.innerHTML = `Поздравляем игрока ${player.name} с победой за ${numberOfTurns} ${wordTurns}!`;
+        document.querySelector('.winScreen').append(p1);
+        if (opponent.type !== 'computer') {
+            const p2 = document.createElement('p');
+            p2.className = 'info'; 
+            p2.innerHTML = `Игрок ${opponent.name}, вы можете отыграться в следующей партии :)`;
+            document.querySelector('.winScreen').append(p2);
+        } else {
+            p1.style.marginBottom = '3vh';
+        }
+    } else {
+        if(player.name !== 'Компьютер') {
+            p1.innerHTML = `${player.name} (компьютер) победил за ${numberOfTurns} ${wordTurns}!`;
+        } else {
+            p1.innerHTML = `${player.name} победил за ${numberOfTurns} ${wordTurns}!`;
+        }
+        document.querySelector('.winScreen').append(p1);
+        const p2 = document.createElement('p');
+        p2.className = 'info'; 
+        p2.innerHTML = `Не расстраивайтесь, ${opponent.name}, вы можете победить в следующей партии :)`;
+        document.querySelector('.winScreen').append(p2);
+    }
+    //Отображаем модальное окно победного экрана
     document.querySelector('.winScreen').style.display = "grid";
+    //Обновляем счет игроков после победы
     player.score += 1;
     updateScore();
+    //Сохраняем или обновляем счет в localStorage
+    const scoreToLS = {
+        player1Score: player1.score,
+        player2Score: player2.score
+    };
+    localStorage.setItem("score", JSON.stringify(scoreToLS));
 }
 
 //Функция, срабатывающяя при нажатии на кнопку "Следующяя игра"
 function playAnotherGame() {
     //Убираем экран окончания игры
-    document.querySelector('.winScreen').style.display = "none";
+    const winScreen = document.querySelector('.winScreen');
+    winScreen.style.display = "none";
+    winScreen.querySelectorAll('img').forEach( (elem) => {
+        elem.remove();
+    } );
+    winScreen.querySelectorAll('.info').forEach( (elem) => {
+        elem.remove();
+    } );
     //Передаем первый ход другому игроку
     if(player1.startFirst) {
         player1.startFirst = false;
@@ -615,7 +728,9 @@ function playAnotherGame() {
     clearDropsArray();
     enableAllDropsIfFull();
     //Меняем игрока, передаем право первого хода
-    changePlayer();
+    if(!currentPlayer.startFirst) {
+        changePlayer();
+    }
     //Если компьютер ходит первый, делаем ход
     computerFirstTurn();
 }
@@ -652,4 +767,56 @@ function enableAllDropsIfFull() {
         document.querySelector(`.drop_${i}`).style = "pointer-events: auto;";
         document.querySelector(`.drop_${i}`).insertAdjacentHTML("beforeend", `<img class="chip" src="${currentPlayer.chipColor}_chip.svg" alt="${currentPlayer.chipColor}_chip">`);
     }
+}
+
+//Функция, открывающяя/закрывающяя меню
+function showMenu() {
+    //Создаем флаг состояния меню, если его нет
+    if(showMenu.isMenuOpen === undefined) {
+        showMenu.isMenuOpen = false;
+    }
+    //Открываем или закрываем меню, в зависимости от флага состояния
+    if(showMenu.isMenuOpen === false) {
+        document.querySelector('.buttons').style.left = '0vw';
+        document.querySelector('#showButtons').style.marginLeft = '0vw';
+        document.querySelector('#showButtons').style.opacity = '0.7';
+        document.querySelector('#showButtons img').style.transform = 'rotate(0.5turn)';
+        showMenu.isMenuOpen = true;
+    } else {
+        document.querySelector('.buttons').style.left = '-20vw';
+        document.querySelector('#showButtons').style.marginLeft = '1.5vw';
+        document.querySelector('#showButtons').style.opacity = '1';
+        document.querySelector('#showButtons img').style.transform = 'rotate(0turn)';
+        showMenu.isMenuOpen = false;
+    }
+}
+
+//Функция принимает gameEnded (boolean) и сохраняет массив в локальном хранилище, если игра не закончена, иначе удаляет его
+function save(gameEnded) {
+    if(!gameEnded) {
+        localStorage.setItem("field", JSON.stringify(fieldArray));
+    } else {
+        localStorage.removeItem("field");
+    }
+}
+
+function load() {
+    //Проверяем есть ли сохраненная игровая сессия
+    if(
+        //Если нет незаконченной игры и счет не был открыт не предлагаем загрузиться
+        !localStorage.getItem("field") &&
+        JSON.parse(localStorage.getItem("score")).player1Score === 0 && 
+        JSON.parse(localStorage.getItem("score")).player2Score === 0
+    ) {
+        return;
+    }
+    const text = 'Ваша предыдущая игровая сессия сохранена, вы можете продолжить её или начать новую.';
+    //Показываем Попап, после ответа пользователя выполняем соответствующие действия
+    showPopup(text, "Загрузить игру?", "Да", "Нет").then( (value) => {
+        //Убираем Попап
+        document.querySelector('.popup').style.marginLeft = '-100vw';
+        if (value === 'yes') {
+            
+        }
+    } );
 }
