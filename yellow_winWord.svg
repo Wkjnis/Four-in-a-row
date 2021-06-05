@@ -1,0 +1,34 @@
+<svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 562.15 227.5">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fe0;
+      }
+
+      .cls-2 {
+        fill: #807700;
+      }
+
+      .cls-3 {
+        fill: #fff;
+        stroke: #000;
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <path class="cls-1" d="M324.93,335.09h37q-24.12,86.51-48.23,173h-37Q300.82,421.6,324.93,335.09Z" transform="translate(-13.16 -280.59)"/>
+  <path class="cls-2" d="M376.7,282.09q-5,18-10,36h-37q5-18,10-36Z" transform="translate(-13.16 -280.59)"/>
+  <path class="cls-3" d="M240.19,507.09" transform="translate(-13.16 -280.59)"/>
+  <path class="cls-3" d="M159.19,298.09" transform="translate(-13.16 -280.59)"/>
+  <path class="cls-3" d="M512.69,508.09" transform="translate(-13.16 -280.59)"/>
+  <path class="cls-3" d="M431.69,299.09" transform="translate(-13.16 -280.59)"/>
+  <path class="cls-3" d="M114.16,507.59" transform="translate(-13.16 -280.59)"/>
+  <path class="cls-3" d="M33.16,298.59" transform="translate(-13.16 -280.59)"/>
+  <path class="cls-2" d="M139.16,280.59l63,227h37l-63-227Z" transform="translate(-13.16 -280.59)"/>
+  <polygon class="cls-1" points="252 1 189 227 226 227 289 1 252 1"/>
+  <polygon class="cls-2" points="0 0 63 226 100 226 37 0 0 0"/>
+  <polygon class="cls-1" points="126 0 63 226 100 226 163 0 126 0"/>
+  <polygon class="cls-2" points="499 227 436 1 399 1 462 227 499 227"/>
+  <polygon class="cls-1" points="373 227 436 1 399 1 336 227 373 227"/>
+  <polygon class="cls-1" points="499.15 227 562.15 1 525.15 1 462.15 227 499.15 227"/>
+</svg>
