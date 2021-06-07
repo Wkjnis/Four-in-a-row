@@ -41,15 +41,6 @@ select {
     box-sizing: border-box;
 }
 
-/*@media (prefers-reduced-motion: reduce) {
-    * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
-}*/
-//------------------------------------------------------------------
 //Основные цвета:#19C6FF#FFEE00#FF3368 треугольная гармония
 //Побочные цвета:#33FF52#5400FF двойная сплит комплиментарная
 //Палитра: #33FF52#5400FF#19C6FF#FFEE00#FF3368
@@ -57,7 +48,7 @@ body {
     display: grid;
     grid-template:
         "score   drops ."20vh
-        "buttons field ."80vh
+        "buttons field links"80vh
         /20vw    60vw  20vw
     ;
     background: linear-gradient( 45deg, #C0FD51, #fbec5d, #CE5DFA, #8468FD);
@@ -562,4 +553,47 @@ form button {
     width: 40vh;
     height: 70%;
     justify-self: center;
+}
+
+//Блок со ссылками
+.links {
+    grid-area: links;
+    padding: 63vh 3vh 1.5vh 3vh;
+}
+
+.links p {
+    display: flex;
+    justify-content: center;
+    font-size: 1.2vh;
+    line-height: 1.5vh;
+    margin: 0.2vh 0vh 0.5vh 0vh;
+}
+
+.mainLinks,
+.otherLinks {
+    display: flex;
+    justify-content: center;
+}
+
+.mainLinks {
+    margin-bottom: 3vh;
+}
+
+.otherLinks a {
+    margin-right: 2vh;
+    display: inline-block;
+    height: 3vh;
+    width: 3vh;
+    padding: 0.4vh;
+}
+
+.otherLinks a:first-child {
+    padding: 0vh;
+}
+
+.mainLinks a {
+    margin-right: 2vh;
+    display: inline-block;
+    height: 5vh;
+    width: 5vh;
 }

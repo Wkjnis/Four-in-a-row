@@ -81,7 +81,7 @@ function createFieldLayout() {
         for( let j = 0; j <= 6; j++ ) {
             let fieldElem = document.createElement('div');
             fieldElem.className = `field_${i}_${j}`;
-            fieldElem.insertAdjacentHTML("beforeend",`<img class="fieldFragment" src="field_fragment.svg" alt="fieldFragment">`);
+            fieldElem.insertAdjacentHTML("beforeend",`<img class="fieldFragment" src="img/field_fragment.svg" alt="fieldFragment">`);
             document.querySelector(".field").append(fieldElem);
         }
     }
@@ -93,7 +93,7 @@ function createDropsLayout( currentPlayer ) {
         let dropsElem = document.createElement('div');
         dropsElem.className = `drop_${i} started`;
         dropsElem.setAttribute('data-index', i);
-        dropsElem.insertAdjacentHTML("beforeend", `<img class="chip" src="${currentPlayer.chipColor}_chip.svg" alt="${currentPlayer.chipColor}_chip">`);
+        dropsElem.insertAdjacentHTML("beforeend", `<img class="chip" src="img/${currentPlayer.chipColor}_chip.svg" alt="${currentPlayer.chipColor}_chip">`);
         dropsElem.addEventListener('click', chipDrop);
         document.querySelector(".drops").append(dropsElem);
     }
@@ -196,7 +196,7 @@ function chipDrop(event) {
 function addChip (dropsIndex)  {
     let chip = document.createElement('div');
     chip.className = `drop_${dropsIndex} added`;
-    chip.insertAdjacentHTML("beforeend", `<img class="chip_added" src="${currentPlayer.chipColor}_chip.svg" alt="${currentPlayer.chipColor}_chip">`);
+    chip.insertAdjacentHTML("beforeend", `<img class="chip_added" src="img/${currentPlayer.chipColor}_chip.svg" alt="${currentPlayer.chipColor}_chip">`);
     document.querySelector(".drops").append(chip);
     return chip;
 }
@@ -237,7 +237,7 @@ function changePlayer() {
     document.querySelectorAll('.started').forEach( (dropsElem) => {
         if( dropsArray[dropsElem.dataset.index] ) {
             dropsElem.querySelector('img').remove();
-            dropsElem.insertAdjacentHTML("beforeend", `<img class="chip" src="${currentPlayer.chipColor}_chip.svg" alt="${currentPlayer.chipColor}_chip">`);
+            dropsElem.insertAdjacentHTML("beforeend", `<img class="chip" src="img/${currentPlayer.chipColor}_chip.svg" alt="${currentPlayer.chipColor}_chip">`);
         }
     } );
 }
@@ -463,7 +463,7 @@ function startGame() {
     //Заменяем стандартные фишки внутри .drops на пользовательскте
     document.querySelectorAll('.started').forEach( (dropsElem) => {
         dropsElem.querySelector('img').remove();
-        dropsElem.insertAdjacentHTML("beforeend", `<img class="chip" src="${currentPlayer.chipColor}_chip.svg" alt="${currentPlayer.chipColor}_chip">`);
+        dropsElem.insertAdjacentHTML("beforeend", `<img class="chip" src="img/${currentPlayer.chipColor}_chip.svg" alt="${currentPlayer.chipColor}_chip">`);
     } );
     //Создаем счет
     updateScore();
@@ -545,19 +545,19 @@ function updateScore() {
     //Создаем блоки с фишками (или меняем), которые будут показывать текущего игрока, при помощи анимации
     if( !document.querySelector('#player1Current') ) {
         const player1Current = document.createElement('div');
-        player1Current.insertAdjacentHTML("beforeend",`<img class="chip" src="${player1.chipColor}_chip.svg" alt="${player1.chipColor}_chip">`);
+        player1Current.insertAdjacentHTML("beforeend",`<img class="chip" src="img/${player1.chipColor}_chip.svg" alt="${player1.chipColor}_chip">`);
         player1Current.id = 'player1Current';
         document.querySelector('#player1Score').prepend(player1Current);
     } else {
-        document.querySelector('#player1Current').insertAdjacentHTML("beforeend",`<img class="chip" src="${player1.chipColor}_chip.svg" alt="${player1.chipColor}_chip">`);
+        document.querySelector('#player1Current').insertAdjacentHTML("beforeend",`<img class="chip" src="img/${player1.chipColor}_chip.svg" alt="${player1.chipColor}_chip">`);
     }
     if( !document.querySelector('#player2Current') ) {
         const player2Current = document.createElement('div');
-        player2Current.insertAdjacentHTML("beforeend",`<img class="chip" src="${player2.chipColor}_chip.svg" alt="${player2.chipColor}_chip">`);
+        player2Current.insertAdjacentHTML("beforeend",`<img class="chip" src="img/${player2.chipColor}_chip.svg" alt="${player2.chipColor}_chip">`);
         player2Current.id = 'player2Current';
         document.querySelector('#player2Score').prepend(player2Current);
     } else {
-        document.querySelector('#player2Current').insertAdjacentHTML("beforeend",`<img class="chip" src="${player2.chipColor}_chip.svg" alt="${player2.chipColor}_chip">`);
+        document.querySelector('#player2Current').insertAdjacentHTML("beforeend",`<img class="chip" src="img/${player2.chipColor}_chip.svg" alt="${player2.chipColor}_chip">`);
     }
     //Ставим анимацию текущего игрока, для второго игрока на паузу
     if(player1.startFirst){
@@ -655,8 +655,8 @@ function win(player) {
     //Обрабатываем ничью
     if(player === null) {
         //Добавляем картинки фишки и слова "win" соответствующие ничьей
-        document.querySelector('#winningPlayer').insertAdjacentHTML("beforeend",`<img id="winChip" src="drow_chip.svg" alt="drow_chip">`);
-        document.querySelector('#winningPlayer').insertAdjacentHTML("beforeend",`<img id="winWord" src="drow_winWord.svg" alt="drow_winWord">`);
+        document.querySelector('#winningPlayer').insertAdjacentHTML("beforeend",`<img id="winChip" src="img/drow_chip.svg" alt="drow_chip">`);
+        document.querySelector('#winningPlayer').insertAdjacentHTML("beforeend",`<img id="winWord" src="img/drow_winWord.svg" alt="drow_winWord">`);
         //Пишем текстом кто победил и за сколько ходов, с сответствующими условиями
         const p1 = document.createElement('p');
         p1.className = 'info';
@@ -684,8 +684,8 @@ function win(player) {
         }
     }
     //Добавляем картинки фишки и слова "win" соответствующего цвета
-    document.querySelector('#winningPlayer').insertAdjacentHTML("beforeend",`<img id="winChip" src="${player.chipColor}_chip.svg" alt="${player.chipColor}_chip">`);
-    document.querySelector('#winningPlayer').insertAdjacentHTML("beforeend",`<img id="winWord" src="${player.chipColor}_winWord.svg" alt="${player.chipColor}_winWord">`);
+    document.querySelector('#winningPlayer').insertAdjacentHTML("beforeend",`<img id="winChip" src="img/${player.chipColor}_chip.svg" alt="${player.chipColor}_chip">`);
+    document.querySelector('#winningPlayer').insertAdjacentHTML("beforeend",`<img id="winWord" src="img/${player.chipColor}_winWord.svg" alt="${player.chipColor}_winWord">`);
     //Пишем текстом кто победил и за сколько ходов, с сответствующими условиями
     const p1 = document.createElement('p');
     p1.className = 'info';
@@ -792,7 +792,7 @@ function enableAllDropsIfFull() {
             document.querySelector(`.drop_${i}`).querySelector('img').remove();
         }
         document.querySelector(`.drop_${i}`).style = "pointer-events: auto;";
-        document.querySelector(`.drop_${i}`).insertAdjacentHTML("beforeend", `<img class="chip" src="${currentPlayer.chipColor}_chip.svg" alt="${currentPlayer.chipColor}_chip">`);
+        document.querySelector(`.drop_${i}`).insertAdjacentHTML("beforeend", `<img class="chip" src="img/${currentPlayer.chipColor}_chip.svg" alt="${currentPlayer.chipColor}_chip">`);
     }
 }
 
@@ -846,12 +846,17 @@ function load() {
     document.body.append(modalDiv);
     //Убираем модальное окно
     document.querySelector('.startScreen').style.display = 'none';
+    //Отключаем возможность открытия меню
+    document.querySelector('#showButtons').style = "pointer-events: none;";
     const text = 'Ваша предыдущая игровая сессия сохранена, вы можете продолжить её или начать новую.';
     //Показываем Попап, после ответа пользователя выполняем соответствующие действия
     showPopup(text, "Загрузить игру?", "Да", "Нет").then( (value) => {
         //Убираем Попап
         document.querySelector('.popup').style.marginLeft = '-100vw';
+        //Убираем модальный блок
         document.querySelector('#modalDiv').remove();
+        //Включаем возможность открытия меню
+        document.querySelector('#showButtons').style = "pointer-events: auto;";
         if (value === 'yes') {
             //Восстанавливаем настройки
             const settings = JSON.parse(localStorage.getItem('settings'));
@@ -914,7 +919,7 @@ function load() {
             document.querySelectorAll('.started').forEach( (dropsElem) => {
                 if( dropsArray[dropsElem.dataset.index] ) {
                     dropsElem.querySelector('img').remove();
-                    dropsElem.insertAdjacentHTML("beforeend", `<img class="chip" src="${currentPlayer.chipColor}_chip.svg" alt="${currentPlayer.chipColor}_chip">`);
+                    dropsElem.insertAdjacentHTML("beforeend", `<img class="chip" src="img/${currentPlayer.chipColor}_chip.svg" alt="${currentPlayer.chipColor}_chip">`);
                 }
             } );
             //Устанавливаем правильную анимацию текущего игрока
@@ -925,7 +930,7 @@ function load() {
                 document.querySelector('#player1Current').style.animationPlayState = 'paused';
                 document.querySelector('#player2Current').style.animationPlayState = 'running';
             }
-            //Добавляем фишки визуально chip.style.top = 11*(fieldRow + 1) + 3 +'vh';
+            //Добавляем фишки визуально
             if(field !== null) {
                 field.forEach( (arr, row) => {
                     arr.forEach( (elem, column) => {
@@ -940,7 +945,7 @@ function load() {
                         }
                         let chip = document.createElement('div');
                         chip.className = `drop_${column} added`;
-                        chip.insertAdjacentHTML("beforeend", `<img class="chip_added" src="${whoseChip.chipColor}_chip.svg" alt="${whoseChip.chipColor}_chip">`);
+                        chip.insertAdjacentHTML("beforeend", `<img class="chip_added" src="img/${whoseChip.chipColor}_chip.svg" alt="${whoseChip.chipColor}_chip">`);
                         document.querySelector(".drops").append(chip);
                         chip.style.top = 11*(row + 1) + 3 +'vh';
                     } );

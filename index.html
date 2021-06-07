@@ -41,8 +41,8 @@
                     <input name="player2Color" type="radio" value="purple">
                 </fieldset>
                 <p>Игра против:</p>
-                <img data-name="opponent" data-value="human" class="opponent" src="human.svg" alt="human">
-                <img data-name="opponent" data-value="computer" class="opponent" src="computer.svg" alt="computer">
+                <img data-name="opponent" data-value="human" class="opponent" src="img/human.svg" alt="human">
+                <img data-name="opponent" data-value="computer" class="opponent" src="img/computer.svg" alt="computer">
                 <input name="opponent" type="radio" value="human">
                 <input name="opponent" type="radio" value="computer">
                 <!--https://www.flaticon.com,https://icons8.ru-->
@@ -67,7 +67,7 @@
         <button type="button" id="restart">Начать заново</button>
         <button type="button" id="settings">Настройки</button>
         <button type="button" id="concede">Сдаться</button>
-        <button type="button" id="showButtons"><img src="arrow.svg" alt="arrow"></button>
+        <button type="button" id="showButtons"><img src="img/arrow.svg" alt="arrow"></button>
     </div>
     <div class="drops"></div>
     <div class="field"></div>
@@ -80,6 +80,17 @@
         <p id="popupText"></p>
         <button id="popupYes" data-answer="yes" type="button"></button>
         <button id="popupNo" data-answer="no" type="button"></button>
+    </div>
+    <div class="links">
+        <div class="mainLinks">
+            <a href="https://github.com/Wkjnis/Four-in-a-row" target="_blank"><img src="img/github.svg" alt="GitHub"></a>
+        </div>
+        <p>Источники SVG изображений:</p>
+        <div class="otherLinks">
+            <a href="https://www.flaticon.com" target="_blank"><img src="img/flaticon.svg" alt="flaticon"></a>
+            <a href="https://icons8.ru" target="_blank"><img src="img/icons8.svg" alt="icons8"></a>
+            <a href="https://ru.freepik.com" target="_blank"><img src="img/freepik.svg" alt="freepik"></a>
+        </div>
     </div>
     <script src="createFieldLayout.js"></script>
 </body>
