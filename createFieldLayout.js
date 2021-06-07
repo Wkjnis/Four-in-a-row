@@ -38,6 +38,7 @@ class Settings {
 
 //Ставим обработчики на форму и начальные настройки
 addListenersAndDefaultSettings();
+load();
 
 /*Создание экземпляров класса
 Создаются стандартные игроки, как гарантия того, что все будет работать
@@ -53,13 +54,17 @@ const player1 = {
     chipColor: "red",
     name: "player1",
     type: "player",
-    fieldArrayIndex: 1
+    fieldArrayIndex: 1,
+    startFirst = true,
+    score = 0
 };
 const player2 = {
     chipColor: "yellow",
     name: "player2",
     type: "player",
-    fieldArrayIndex: 2
+    fieldArrayIndex: 2,
+    startFirst = false,
+    score = 0
 };
 */
 
@@ -167,6 +172,9 @@ function chipDrop(event) {
 
         //Проверка на победу кого-то или ничью
         let gameEnded = isGameEnd(fieldRow, dropsIndex);
+
+        //Сохраняем массив игрового поля или удаляем его, если игра закончена
+        save(gameEnded);
 
         //Меняем текущего игрока
         changePlayer();
@@ -431,6 +439,7 @@ function startGame() {
     const form = document.querySelector('form[name=settings]');
     const settings = new Settings(form.player1Name.value, form.player1Color.value, form.player2Name.value, form.player2Color.value, form.opponent.value);
     localStorage.setItem('settings', JSON.stringify(settings));
+    localStorage.setItem('player1Starts', true);
     //Заменяем стандартных игроков на пользовательских 
     player1 = new Player(form.player1Name.value, 'human', form.player1Color.value, 1, true);
     player2 = new Player(form.player2Name.value, form.opponent.value, form.player2Color.value, 2, false);
@@ -448,6 +457,9 @@ function startGame() {
     clearDropsArray();
     //Включаем все области для броска фишек и добавляем в них картинки фишек
     enableAllDropsIfFull();
+    //Очищаем массив поля в localStorage
+    localStorage.removeItem('field');
+    localStorage.setItem('player1Starts', true);
     //Заменяем стандартные фишки внутри .drops на пользовательскте
     document.querySelectorAll('.started').forEach( (dropsElem) => {
         dropsElem.querySelector('img').remove();
@@ -455,6 +467,11 @@ function startGame() {
     } );
     //Создаем счет
     updateScore();
+    const scoreToLS = {
+        player1Score: player1.score,
+        player2Score: player2.score
+    };
+    localStorage.setItem("score", JSON.stringify(scoreToLS));
     //Убираем стартовое модальное окно
     document.querySelector('.startScreen').style.display = 'none';
 }
@@ -543,7 +560,13 @@ function updateScore() {
         document.querySelector('#player2Current').insertAdjacentHTML("beforeend",`<img class="chip" src="${player2.chipColor}_chip.svg" alt="${player2.chipColor}_chip">`);
     }
     //Ставим анимацию текущего игрока, для второго игрока на паузу
-    player2Current.style.animationPlayState = 'paused';
+    if(player1.startFirst){
+        document.querySelector('#player1Current').style.animationPlayState = 'running';
+        document.querySelector('#player2Current').style.animationPlayState = 'paused';
+    } else {
+        document.querySelector('#player1Current').style.animationPlayState = 'paused';
+        document.querySelector('#player2Current').style.animationPlayState = 'running';
+    }
 }
 
 /*Функция показывает Попап с переданным вопросом questin, переданным текстом text, и переданными занчениями на кнопках yes и no
@@ -701,6 +724,17 @@ function win(player) {
         player2Score: player2.score
     };
     localStorage.setItem("score", JSON.stringify(scoreToLS));
+    //Передаем первый ход другому игроку
+    if(player1.startFirst) {
+        player1.startFirst = false;
+        player2.startFirst = true;
+        localStorage.setItem('player1Starts', false);
+    } else {
+        player1.startFirst = true;
+        player2.startFirst = false;
+        localStorage.setItem('player1Starts', true);
+    }
+    localStorage.removeItem('field');
 }
 
 //Функция, срабатывающяя при нажатии на кнопку "Следующяя игра"
@@ -714,19 +748,12 @@ function playAnotherGame() {
     winScreen.querySelectorAll('.info').forEach( (elem) => {
         elem.remove();
     } );
-    //Передаем первый ход другому игроку
-    if(player1.startFirst) {
-        player1.startFirst = false;
-        player2.startFirst = true;
-    } else {
-        player1.startFirst = true;
-        player2.startFirst = false;
-    }
     //Очищаем служебные массивы, игровое поле, область для броска фишек
     clearField();
     clearFieldArray();
     clearDropsArray();
     enableAllDropsIfFull();
+    updateScore();
     //Меняем игрока, передаем право первого хода
     if(!currentPlayer.startFirst) {
         changePlayer();
@@ -800,6 +827,7 @@ function save(gameEnded) {
     }
 }
 
+//Загружаем игру
 function load() {
     //Проверяем есть ли сохраненная игровая сессия
     if(
@@ -810,13 +838,120 @@ function load() {
     ) {
         return;
     }
+    //Добавляем блок, перекрывающий все остальные кнопки
+    const modalDiv = document.createElement('div');
+    modalDiv.className = 'modal';
+    modalDiv.id = 'modalDiv';
+    modalDiv.style.zIndex = '20';
+    document.body.append(modalDiv);
+    //Убираем модальное окно
+    document.querySelector('.startScreen').style.display = 'none';
     const text = 'Ваша предыдущая игровая сессия сохранена, вы можете продолжить её или начать новую.';
     //Показываем Попап, после ответа пользователя выполняем соответствующие действия
     showPopup(text, "Загрузить игру?", "Да", "Нет").then( (value) => {
         //Убираем Попап
         document.querySelector('.popup').style.marginLeft = '-100vw';
+        document.querySelector('#modalDiv').remove();
         if (value === 'yes') {
-            
+            //Восстанавливаем настройки
+            const settings = JSON.parse(localStorage.getItem('settings'));
+            player1 = new Player(settings.player1Name, 'human', settings.player1Color, 1, true);
+            player2 = new Player(settings.player2Name, settings.opponent, settings.player2Color, 2, false);
+            if(!localStorage.getItem('player1Starts')) {
+                player1.startFirst = false;
+                player2.startFirst = true;
+            }
+            //Обновляем счет
+            const score = JSON.parse(localStorage.getItem('score'));
+            player1.score = score.player1Score;
+            player2.score = score.player2Score;
+            updateScore();
+
+            const field = JSON.parse(localStorage.getItem('field'));
+
+            if(field !== null) {
+                //Меняем fieldArray
+                for(let i = 0; i <= 5; i++) {
+                    for(let j = 0; j <= 6; j++) {
+                        fieldArray[i][j] = field[i][j];
+                    }
+                }
+                //Устанавливем currentPlayer
+                let chipsQuantity = 0;
+                field.forEach( (elem) => {
+                    elem.forEach( (value) => {
+                        if( value !== 0 ) {
+                            chipsQuantity++;
+                        }
+                    } );
+                } );
+                if(chipsQuantity % 2 === 0) {
+                    if(JSON.parse(localStorage.getItem('player1Starts'))) {
+                        currentPlayer = player1;
+                    } else {
+                        currentPlayer = player2;
+                    }
+                } else {
+                    if(JSON.parse(localStorage.getItem('player1Starts'))) {
+                        currentPlayer = player2;
+                    } else {
+                        currentPlayer = player1;
+                    }
+                }
+                //Отключаем возможность броска фишки в заполненые столбцы
+                for(let i = 0; i <= 6; i++) {
+                    disableDropIfFull(i);
+                }
+            } else {
+                //Устанавливем currentPlayer
+                if(JSON.parse(localStorage.getItem('player1Starts'))) {
+                    currentPlayer = player1;
+                } else {
+                    currentPlayer = player2;
+                }
+            }
+            //Меняем drops на нужный цвет
+            document.querySelectorAll('.started').forEach( (dropsElem) => {
+                if( dropsArray[dropsElem.dataset.index] ) {
+                    dropsElem.querySelector('img').remove();
+                    dropsElem.insertAdjacentHTML("beforeend", `<img class="chip" src="${currentPlayer.chipColor}_chip.svg" alt="${currentPlayer.chipColor}_chip">`);
+                }
+            } );
+            //Устанавливаем правильную анимацию текущего игрока
+            if(currentPlayer === player1){
+                document.querySelector('#player1Current').style.animationPlayState = 'running';
+                document.querySelector('#player2Current').style.animationPlayState = 'paused';
+            } else {
+                document.querySelector('#player1Current').style.animationPlayState = 'paused';
+                document.querySelector('#player2Current').style.animationPlayState = 'running';
+            }
+            //Добавляем фишки визуально chip.style.top = 11*(fieldRow + 1) + 3 +'vh';
+            if(field !== null) {
+                field.forEach( (arr, row) => {
+                    arr.forEach( (elem, column) => {
+                        if(elem === 0) {
+                            return;
+                        }
+                        let whoseChip = player1;
+                        if(elem === 1) {
+                            whoseChip = player1;
+                        } else {
+                            whoseChip = player2;
+                        }
+                        let chip = document.createElement('div');
+                        chip.className = `drop_${column} added`;
+                        chip.insertAdjacentHTML("beforeend", `<img class="chip_added" src="${whoseChip.chipColor}_chip.svg" alt="${whoseChip.chipColor}_chip">`);
+                        document.querySelector(".drops").append(chip);
+                        chip.style.top = 11*(row + 1) + 3 +'vh';
+                    } );
+                } );
+            }
+        }
+        //Если ответ нет, то выводим окно с настройками
+        if (value === 'no') {
+            setTimeout( () => {
+                document.querySelector('.startScreen').style.display = 'grid';
+            }, 300);
         }
     } );
 }
