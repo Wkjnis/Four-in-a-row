@@ -488,12 +488,13 @@ function addListenersAndDefaultSettings() {
     } );
     //На кнопку "Начать игру" в форме
     document.querySelector('.settings button').addEventListener('click', startGame);
-    //На кнопку "Настройки"  
+    /*Делегируем события с кнопок "Настройки", "Сдаться", "Начать заново" на блок .buttons, 
+    и, в зависимости от нажатой кнопки, вызываем нужный обработчик.
+    Вместо таких обработчиков:
     document.querySelector('#restart').addEventListener('click', restart);
-    //На кнопку "Начать заново"
     document.querySelector('#settings').addEventListener('click', openSettings);
-    //На кнопку "Сдаться"
-    document.querySelector('#concede').addEventListener('click', concede);
+    document.querySelector('#concede').addEventListener('click', concede);*/
+    document.querySelector('.buttons').addEventListener('click', delegatedEventHandler);
     //На кнопку "Следующяя игра"
     document.querySelector('#playAnotherGame').addEventListener('click', playAnotherGame);
     //На кнопку открывающую/закрывающую меню
@@ -601,11 +602,15 @@ function openSettings() {
         //Убираем Попап
         document.querySelector('.popup').style.marginLeft = '-100vw';
         if (value === 'yes') {
+            //Задвигаем меню
+            document.querySelector('#showButtons').dispatchEvent(new Event('click'));
             //Показываем окно с настройками когда Попап пропадет
             setTimeout( () => {
                 document.querySelector('.startScreen').style.display = 'grid';
             }, 300);
         }
+        //Ставим флаг в false, когда убираем Попап
+        delegatedEventHandler._isPopupShowed = false;
     } );
 }
 
@@ -629,6 +634,8 @@ function restart() {
             //Если компьютер ходит первый, делаем ход
             computerFirstTurn();
         }
+        //Ставим флаг в false, когда убираем Попап
+        delegatedEventHandler._isPopupShowed = false;
     } );
 }
 
@@ -647,7 +654,41 @@ function concede() {
                 win(player1);
             }
         }
+        //Ставим флаг в false, когда убираем Попап
+        delegatedEventHandler._isPopupShowed = false;
     } );
+}
+
+//Функция обрабатывает делегированные события блока .buttons
+function delegatedEventHandler(event) {
+    //Если флага нет создаем его
+    if(delegatedEventHandler._isPopupShowed === undefined) {
+        delegatedEventHandler._isPopupShowed = false;
+    }
+    let time = 0;
+    //Если флаг true (Попап показывается), скрываем его, завершая промис с resolve('no').
+    if(delegatedEventHandler._isPopupShowed !== false) {
+        const eventClick = new Event('click');
+        document.querySelector('#popupNo').dispatchEvent(eventClick);
+        time = 350;
+    }
+
+    //Обрабатываем делегированные события
+    //Ставим флаг в true, когда показываем Попап
+    setTimeout( () => {
+        if(event.target === document.querySelector('#restart')) {
+            delegatedEventHandler._isPopupShowed = true;
+            restart();
+        }
+        if(event.target === document.querySelector('#settings')) {
+            delegatedEventHandler._isPopupShowed = true;
+            openSettings();
+        }
+        if(event.target === document.querySelector('#concede')) {
+            delegatedEventHandler._isPopupShowed = true;
+            concede();
+        }
+    }, time);
 }
 
 //Функция, вызывающяяся при победе одного из игроков, принимает объект класса Player или null
@@ -799,22 +840,22 @@ function enableAllDropsIfFull() {
 //Функция, открывающяя/закрывающяя меню
 function showMenu() {
     //Создаем флаг состояния меню, если его нет
-    if(showMenu.isMenuOpen === undefined) {
-        showMenu.isMenuOpen = false;
+    if(showMenu._isMenuOpen === undefined) {
+        showMenu._isMenuOpen = false;
     }
     //Открываем или закрываем меню, в зависимости от флага состояния
-    if(showMenu.isMenuOpen === false) {
+    if(showMenu._isMenuOpen === false) {
         document.querySelector('.buttons').style.left = '0vw';
-        document.querySelector('#showButtons').style.marginLeft = '0vw';
+        document.querySelector('#showButtons').style.marginLeft = '0.5vw';
         document.querySelector('#showButtons').style.opacity = '0.7';
         document.querySelector('#showButtons img').style.transform = 'rotate(0.5turn)';
-        showMenu.isMenuOpen = true;
+        showMenu._isMenuOpen = true;
     } else {
-        document.querySelector('.buttons').style.left = '-20vw';
-        document.querySelector('#showButtons').style.marginLeft = '1.5vw';
+        document.querySelector('.buttons').style.left = '-21vw';
+        document.querySelector('#showButtons').style.marginLeft = '2.5vw';
         document.querySelector('#showButtons').style.opacity = '1';
         document.querySelector('#showButtons img').style.transform = 'rotate(0turn)';
-        showMenu.isMenuOpen = false;
+        showMenu._isMenuOpen = false;
     }
 }
 
@@ -830,13 +871,19 @@ function save(gameEnded) {
 //Загружаем игру
 function load() {
     //Проверяем есть ли сохраненная игровая сессия
-    if(
-        //Если нет незаконченной игры и счет не был открыт не предлагаем загрузиться
-        !localStorage.getItem("field") &&
-        JSON.parse(localStorage.getItem("score")).player1Score === 0 && 
-        JSON.parse(localStorage.getItem("score")).player2Score === 0
-    ) {
-        return;
+    if(JSON.parse(localStorage.getItem("score")) !== null) {
+        if(
+            //Если нет незаконченной игры и счет не был открыт не предлагаем загрузиться
+            !localStorage.getItem("field") &&
+            JSON.parse(localStorage.getItem("score")).player1Score === 0 && 
+            JSON.parse(localStorage.getItem("score")).player2Score === 0
+        ) {
+            return;
+        }
+    } else {
+        if(!localStorage.getItem("field")) {
+            return;
+        }
     }
     //Добавляем блок, перекрывающий все остальные кнопки
     const modalDiv = document.createElement('div');
@@ -868,8 +915,10 @@ function load() {
             }
             //Обновляем счет
             const score = JSON.parse(localStorage.getItem('score'));
-            player1.score = score.player1Score;
-            player2.score = score.player2Score;
+            if(score !== null) {
+                player1.score = score.player1Score;
+                player2.score = score.player2Score;
+            }
             updateScore();
 
             const field = JSON.parse(localStorage.getItem('field'));

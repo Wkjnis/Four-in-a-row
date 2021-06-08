@@ -51,7 +51,8 @@ body {
         "buttons field links"80vh
         /20vw    60vw  20vw
     ;
-    background: linear-gradient( 45deg, #C0FD51, #fbec5d, #CE5DFA, #8468FD);
+    //background: linear-gradient( 45deg, #C0FD51, #fbec5d, #CE5DFA, #8468FD);
+    background: linear-gradient( 45deg, #CE5DFA, #8468FD, #CE5DFA);
     background-size: 400%;
     animation: body_background 40s linear infinite;
     //font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
@@ -96,19 +97,19 @@ body {
 
 .started:hover {
     opacity: 1;
-    -webkit-filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0,0,0,0.8));
-    -moz-filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0,0,0,0.8));
-    -ms-filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0,0,0,0.8));
-    -o-filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0,0,0,0.8));
-    filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0,0,0,0.8));
+    -webkit-filter: drop-shadow(0.4vh 0.4vh 0.3vh rgba(0,0,0,0.6));
+    -moz-filter: drop-shadow(0.4vh 0.4vh 0.3vh rgba(0,0,0,0.6));
+    -ms-filter: drop-shadow(0.4vh 0.4vh 0.3vh rgba(0,0,0,0.6));
+    -o-filter: drop-shadow(0.4vh 0.4vh 0.3vh rgba(0,0,0,0.6));
+    filter: drop-shadow(0.4vh 0.4vh 0.3vh rgba(0,0,0,0.6));
 }
 
 .started:active {
-    -webkit-filter: drop-shadow(0.15vh 0.15vh 0.2vh rgba(0,0,0,1));
-    -moz-filter: drop-shadow(0.15vh 0.15vh 0.2vh rgba(0,0,0,1));
-    -ms-filter: drop-shadow(0.15vh 0.15vh 0.2vh rgba(0,0,0,1));
-    -o-filter: drop-shadow(0.15vh 0.15vh 0.2vh rgba(0,0,0,1));
-    filter: drop-shadow(0.15vh 0.15vh 0.2vh rgba(0,0,0,1));
+    -webkit-filter: drop-shadow(0.15vh 0.15vh 0.3vh rgba(0,0,0,0.9));
+    -moz-filter: drop-shadow(0.15vh 0.15vh 0.3vh rgba(0,0,0,0.9));
+    -ms-filter: drop-shadow(0.15vh 0.15vh 0.3vh rgba(0,0,0,0.9));
+    -o-filter: drop-shadow(0.15vh 0.15vh 0.3vh rgba(0,0,0,0.9));
+    filter: drop-shadow(0.15vh 0.15vh 0.3vh rgba(0,0,0,0.9));
 }
 
 
@@ -135,7 +136,8 @@ body {
     -moz-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
     -ms-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
     -o-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
-    filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0,0,0,0.8));    
+    filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0,0,0,0.8));
+    box-shadow: 0.4vh 0.4vh 0.9vh 0.7vh rgba(0,0,0,0.1);
 }
 
 @for $i from 0 through 5 {
@@ -345,7 +347,7 @@ button {
 }
 
 button:hover {
-    box-shadow:0.3vh 0.3vh 0.3vh rgba(0,0,0,0.6);
+    box-shadow:0.3vh 0.3vh 0.5vh rgba(0,0,0,0.7);
 }
 
 button:active {
@@ -364,9 +366,10 @@ form button {
     border-bottom-right-radius: 2vh;
     border-top-right-radius: 2vh;
     position: relative;
-    left: -20vw;
+    left: -21vw;
     z-index: 150;
     transition: left 0.5s linear;
+    box-shadow: 0.2vh 0.2vh 0.7vh rgba(0,0,0,0.8);
 }
 
 .buttons button {
@@ -385,7 +388,7 @@ form button {
     position: absolute;
     top: calc(27vh);
     margin: 0;
-    margin-left: 1.5vw;
+    margin-left: 2.5vw;
     transition: margin-left 0.5s linear;
     opacity: 1;
 }
@@ -433,11 +436,6 @@ form button {
     height:4vh;
     display: inline-block;
     padding-top: 1vh;
-    -webkit-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
-    -moz-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
-    -ms-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
-    -o-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
-    filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0,0,0,0.8)); 
     animation: currentPlayerAnimation 2s linear infinite;
 }
 
@@ -471,11 +469,7 @@ form button {
     margin-bottom: 35vh;
     margin-left: -100vw;
     margin-right: 35vw;
-    -webkit-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
-    -moz-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
-    -ms-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
-    -o-filter: drop-shadow(0.2vh 0.2vh 0.3vh  rgba(0,0,0,0.8));
-    filter: drop-shadow(0.2vh 0.2vh 0.3vh rgba(0,0,0,0.8));
+    box-shadow: 0.2vh 0.2vh 1.2vh rgba(0,0,0,0.8);
     transition: margin-left 0.3s linear;
 }
 
@@ -580,7 +574,6 @@ form button {
 }
 
 .otherLinks a {
-    margin-right: 2vh;
     display: inline-block;
     height: 3vh;
     width: 3vh;
