@@ -130,7 +130,11 @@ function chipDrop(event) {
 
         //Функция для отрисовки прогресса анимации
         function draw(progress) {
-            chip.style.top = progress*11*(fieldRow+1) + progress*3 + 'vh';
+            if( window.innerHeight >= window.innerWidth) {
+                chip.style.top = progress*11*(fieldRow+1) + progress*3 + 'vw';
+            } else {
+                chip.style.top = progress*11*(fieldRow+1) + progress*3 + 'vh';
+            }
         }
 
         //Длительность анимации, зависящяя от высоты падения
@@ -497,8 +501,12 @@ function addListenersAndDefaultSettings() {
     document.querySelector('.buttons').addEventListener('click', delegatedEventHandler);
     //На кнопку "Следующяя игра"
     document.querySelector('#playAnotherGame').addEventListener('click', playAnotherGame);
+    //На кнопку "Просмотр игрового поля"
+    document.querySelector('#showField').addEventListener('click', hideWinScreen);
     //На кнопку открывающую/закрывающую меню
     document.querySelector('#showButtons').addEventListener('click', showMenu);
+    //На объект window для отслеживания изменения размера окна (для адаптивности)
+    window.addEventListener('resize', resizeWindow);
     //На поля для ввода имен
     document.querySelectorAll('.settings input[type=text]').forEach( (elem) => {
         elem.addEventListener('blur', nameNormalization);
@@ -580,7 +588,11 @@ function showPopup(text, question = 'Вы уверенны?', yes = 'Да', no =
         document.querySelector('#popupYes').innerHTML = yes;
         document.querySelector('#popupNo').innerHTML = no;
         //Показываем Попап
-        document.querySelector('.popup').style.marginLeft = '35vw';
+        if( window.innerHeight >= window.innerWidth) {
+            document.querySelector('.popup').style.marginLeft = '20vw';
+        } else {
+            document.querySelector('.popup').style.marginLeft = '35vw';
+        }
         //Функция, дающяя ответ, при нажатии на кнопку
         function answer (event) {
             resolve(event.target.dataset.answer);
@@ -622,6 +634,8 @@ function restart() {
         //Убираем Попап
         document.querySelector('.popup').style.marginLeft = '-100vw';
         if (value === 'yes') {
+            //Задвигаем меню
+            document.querySelector('#showButtons').dispatchEvent(new Event('click'));
             //Очищаем служебные массивы, игровое поле, область для броска фишек
             clearField();
             clearFieldArray();
@@ -647,6 +661,8 @@ function concede() {
         //Убираем Попап
         document.querySelector('.popup').style.marginLeft = '-100vw';
         if (value === 'yes') {
+            //Задвигаем меню
+            document.querySelector('#showButtons').dispatchEvent(new Event('click'));
             //Игрок, которому сдались, побеждает
             if(currentPlayer === player1) {
                 win(player2);
@@ -730,7 +746,7 @@ function win(player) {
     //Пишем текстом кто победил и за сколько ходов, с сответствующими условиями
     const p1 = document.createElement('p');
     p1.className = 'info';
-    p1.style.marginBottom = '8vh';
+    p1.style.marginBottom = '33vh';
     if(player.type === 'human') { 
         p1.innerHTML = `Поздравляем игрока ${player.name} с победой за ${numberOfTurns} ${wordTurns}!`;
         document.querySelector('.winScreen').append(p1);
@@ -738,9 +754,10 @@ function win(player) {
             const p2 = document.createElement('p');
             p2.className = 'info'; 
             p2.innerHTML = `Игрок ${opponent.name}, вы можете отыграться в следующей партии :)`;
+            p2.style.marginBottom = '27vh';
             document.querySelector('.winScreen').append(p2);
         } else {
-            p1.style.marginBottom = '3vh';
+            p1.style.marginBottom = '30vh';
         }
     } else {
         if(player.name !== 'Компьютер') {
@@ -752,6 +769,7 @@ function win(player) {
         const p2 = document.createElement('p');
         p2.className = 'info'; 
         p2.innerHTML = `Не расстраивайтесь, ${opponent.name}, вы можете победить в следующей партии :)`;
+        p2.style.marginBottom = '27vh';
         document.querySelector('.winScreen').append(p2);
     }
     //Отображаем модальное окно победного экрана
@@ -837,6 +855,15 @@ function enableAllDropsIfFull() {
     }
 }
 
+//Устанавливаем стили для меню и кнопки показа меню в зависимости от состояния или размера окна
+//Принимает 4 аргумета типа string
+function setMenuStyles(left, marginLeft, opacity, transform) {
+    document.querySelector('.buttons').style.left = left;
+    document.querySelector('#showButtons').style.marginLeft = marginLeft;
+    document.querySelector('#showButtons').style.opacity = opacity;
+    document.querySelector('#showButtons img').style.transform = transform;
+}
+
 //Функция, открывающяя/закрывающяя меню
 function showMenu() {
     //Создаем флаг состояния меню, если его нет
@@ -844,18 +871,22 @@ function showMenu() {
         showMenu._isMenuOpen = false;
     }
     //Открываем или закрываем меню, в зависимости от флага состояния
-    if(showMenu._isMenuOpen === false) {
-        document.querySelector('.buttons').style.left = '0vw';
-        document.querySelector('#showButtons').style.marginLeft = '0.5vw';
-        document.querySelector('#showButtons').style.opacity = '0.7';
-        document.querySelector('#showButtons img').style.transform = 'rotate(0.5turn)';
-        showMenu._isMenuOpen = true;
+    if( window.innerHeight >= window.innerWidth) {
+        if(showMenu._isMenuOpen === false) {
+            setMenuStyles('0vw', '0.5vw', '0.7', 'rotate(0.5turn)');
+            showMenu._isMenuOpen = true;
+        } else {
+            setMenuStyles('-41vw', '2.5vw', '1', 'rotate(0turn)');
+            showMenu._isMenuOpen = false;
+        }   
     } else {
-        document.querySelector('.buttons').style.left = '-21vw';
-        document.querySelector('#showButtons').style.marginLeft = '2.5vw';
-        document.querySelector('#showButtons').style.opacity = '1';
-        document.querySelector('#showButtons img').style.transform = 'rotate(0turn)';
-        showMenu._isMenuOpen = false;
+        if(showMenu._isMenuOpen === false) {
+            setMenuStyles('0vw', '0.5vw', '0.7', 'rotate(0.5turn)');
+            showMenu._isMenuOpen = true;
+        } else {
+            setMenuStyles('-21vw', '2.5vw', '1', 'rotate(0turn)');
+            showMenu._isMenuOpen = false;
+        }   
     }
 }
 
@@ -909,7 +940,7 @@ function load() {
             const settings = JSON.parse(localStorage.getItem('settings'));
             player1 = new Player(settings.player1Name, 'human', settings.player1Color, 1, true);
             player2 = new Player(settings.player2Name, settings.opponent, settings.player2Color, 2, false);
-            if(!localStorage.getItem('player1Starts')) {
+            if(!JSON.parse(localStorage.getItem('player1Starts'))) {
                 player1.startFirst = false;
                 player2.startFirst = true;
             }
@@ -980,25 +1011,14 @@ function load() {
                 document.querySelector('#player2Current').style.animationPlayState = 'running';
             }
             //Добавляем фишки визуально
-            if(field !== null) {
-                field.forEach( (arr, row) => {
-                    arr.forEach( (elem, column) => {
-                        if(elem === 0) {
-                            return;
-                        }
-                        let whoseChip = player1;
-                        if(elem === 1) {
-                            whoseChip = player1;
-                        } else {
-                            whoseChip = player2;
-                        }
-                        let chip = document.createElement('div');
-                        chip.className = `drop_${column} added`;
-                        chip.insertAdjacentHTML("beforeend", `<img class="chip_added" src="img/${whoseChip.chipColor}_chip.svg" alt="${whoseChip.chipColor}_chip">`);
-                        document.querySelector(".drops").append(chip);
-                        chip.style.top = 11*(row + 1) + 3 +'vh';
-                    } );
-                } );
+            addDropsVisually(field);
+            //Если сейчас ход компьютера, делаем ход
+            if (!localStorage.getItem('field')) {
+                computerFirstTurn();
+            } else {
+                if(currentPlayer.type === 'computer') {
+                    makeComputerTurn();
+                }
             }
         }
         //Если ответ нет, то выводим окно с настройками
@@ -1009,3 +1029,76 @@ function load() {
         }
     } );
 }
+
+//Прячем победный экран, чтобы пользователь мог посмотреть игровое поле
+function hideWinScreen() {
+    let modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.backgroundColor = 'rgba(255, 255, 255, 0)';
+    document.body.append(modal);
+    document.querySelector('.winScreen').style.display = 'none';
+    setTimeout( () => {
+        document.querySelector('.winScreen').style.display = 'grid';
+        modal.remove();
+    }, 2000);
+}
+
+//Функция расставляет фишки по ячейкам визуально из двумерного массива field из localStorage
+//В качестве аргумента принимает спарсеный массив field(необходимо предварительно спарсить его)
+function addDropsVisually(field) {
+    if(field !== null) {
+        field.forEach( (arr, row) => {
+            arr.forEach( (elem, column) => {
+                if(elem === 0) {
+                    return;
+                }
+                let whoseChip = player1;
+                if(elem === 1) {
+                    whoseChip = player1;
+                } else {
+                    whoseChip = player2;
+                }
+                let chip = document.createElement('div');
+                chip.className = `drop_${column} added`;
+                chip.insertAdjacentHTML("beforeend", `<img class="chip_added" src="img/${whoseChip.chipColor}_chip.svg" alt="${whoseChip.chipColor}_chip">`);
+                document.querySelector(".drops").append(chip);
+                if( window.innerHeight >= window.innerWidth) {
+                    chip.style.top = 11*(row + 1) + 3 + 'vw';
+                } else {
+                    chip.style.top = 11*(row + 1) + 3 + 'vh';
+                }
+            } );
+        } );
+    }
+}
+
+//Функция обработчик для события изменения размера окна браузера, адаптирует конкретные элементы (невозможно адаптировать через css)
+//при изменении размеров (смене ориентации: width > hight или hight >= width)
+function resizeWindow() {
+    //Очищаем обработчик события, чтобы снизить нагрузку при ресайзе
+    //В итоге обработчик сработает только при "окончательном" изменении размеров
+    if(resizeWindow._timeoutId) {
+        clearTimeout(resizeWindow._timeoutId);
+    }
+    resizeWindow._timeoutId = setTimeout( () => {
+        //адаптируем меню
+        if(showMenu._isMenuOpen === false) {
+            setMenuStyles('', '', '', '');
+        }
+        //адаптируем попап, есло он показывается
+        if( window.innerHeight >= window.innerWidth) {
+            if(document.querySelector('.popup').style.marginLeft == '35vw') {
+                document.querySelector('.popup').style.marginLeft = '20vw';
+            }
+        } else {
+            if(document.querySelector('.popup').style.marginLeft == '20vw') {
+                document.querySelector('.popup').style.marginLeft = '35vw';
+            }
+        }
+        //адаптируем позицию "брошенных" фишек
+        clearField();
+        const field = JSON.parse(localStorage.getItem('field'));
+        addDropsVisually(field);
+    }, 50);
+}
+ 
