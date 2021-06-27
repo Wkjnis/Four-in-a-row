@@ -1111,23 +1111,4 @@ function resizeWindow() {
     }, 50);
 }
 
-let height = window.innerHeight;
-
-document.querySelectorAll('.settings input[type=text]').forEach( (elem) => {
-    elem.addEventListener('focus', (event) => {
-        if(window.innerHeight < height) {
-            document.querySelector('.rules').style.height = '140vh';
-        }
-    });
-} );
-
-document.querySelectorAll('.settings input[type=text]').forEach( (elem) => {
-    elem.addEventListener('blur', (event) => {
-        if(window.innerHeight = height) {
-            document.querySelector('.rules').style.height = '';
-        }
-    });
-} );
-
-
  
