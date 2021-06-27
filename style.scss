@@ -946,6 +946,7 @@ button:active {
         height: 18vw;
         width: 18vw;
         margin-left: calc(49vw - 18vw - 9vw);
+        margin-bottom: 1vw;
     }
     
     #winWord {
@@ -960,6 +961,190 @@ button:active {
     #showField,
     #playAnotherGame {
         font-size: 3vw;
+    }
+    
+    .startScreen {
+        grid-template:
+            "settings"65vw
+            "rules" 40vh 
+            /90vw      
+        ;
+        grid-column-gap: 0vh;
+        grid-row-gap: 0vh;
+    }
+    
+    .settings {
+        margin: 2.5vw 2.5vw 0vw 2.5vw;
+        padding: 2.5vw;
+        border-top-left-radius: 3vh;
+        border-top-right-radius: 3vh;
+        border-bottom-left-radius: 0vh;
+        
+        p:first-child {
+            font-size: 3vw;
+            margin-top: 1vw;
+            margin-bottom: 1vw;
+        }
+    }
+
+     .rules {
+        margin: 0vw 2.5vw 2.5vw 2.5vw;
+        padding: 2.5vw;
+        border-top-right-radius: 0vh;
+        border-bottom-right-radius: 3vh;
+        border-bottom-left-radius: 3vh;
+
+        p:first-child {
+            font-size: 3vw;
+        }
+
+        p {
+            font-size: calc(1vw + 1vh);
+            margin: 0vh;
+            margin-top: 0.5vw;
+        }
+    }
+    
+    fieldset {
+        border: 0.3vw solid black;
+        border-radius: 2vw;
+        padding: 1.5vw;
+        
+        p:nth-child(4) {
+            margin: 0vh !important;
+            position: relative;
+            bottom: 0.5vh;
+        }
+    }
+    
+    form {
+        input[type=text] {
+            display: inline-block;
+            width:75%;
+            margin: 0vw 5vw 0vw 5vw;
+            padding:3vw;
+            box-shadow:0.4vw 0.4vw 0.3vw rgba(0,0,0,0.4);
+            height: 3vh;
+            font-size: 3vw;
+        }
+    
+        p {
+            display: inline-block;
+            font-size: 3vw;
+        }
+    
+        legend {
+            font-size: 3vw;
+        }
+    
+        button {
+            margin-top: 1vh;
+            padding: 1.5vw;
+            width: 40%;
+            font-size: 3vw;
+            height: 6vw;
+            display: inline-block;
+            position: relative;
+            left: 3vw;
+            bottom: 2vw;
+        }    
+    }
+    
+    p {
+        line-height: 3vw;
+    }
+    
+    #VS {
+        position: relative;
+        bottom: 2vw;
+        margin-left: calc(1.5vw + 1px);
+    }
+    
+    legend + p {
+        margin-top: 0vw;
+    }
+    
+    .radioCircle {
+        border-radius: 50%;
+        width: calc(2.3vw + 1.2vh);
+        height: calc(2.3vw + 1.2vh);
+        margin-left: 1vw;
+        margin-right: 0vw;
+        box-shadow:0.4vw 0.4vw 0.3vw rgba(0,0,0,0.4);
+        margin-top: 1vh;
+    }
+    
+    .radioCircle:hover {
+        box-shadow:0.3vw 0.3vw 0.3vw rgba(0,0,0,0.6);
+    }
+    
+    .radioCircle:active {
+        box-shadow:0.2vw 0.2vw 0.3vw rgba(0,0,0,1);
+    }
+    
+    .radioCircle[data-value=red] {
+        border: 0.3vw solid #FF3368;
+    }
+    
+    .radioCircle[data-value=yellow] {
+        border: 0.3vw solid #FFEE00;
+    }
+    
+    .radioCircle[data-value=green] {
+        border: 0.3vw solid #33FF52;
+    }
+    
+    .radioCircle[data-value=purple] {
+        border: 0.3vw solid #5400FF;
+    }
+    
+    .radioCircleSelected {
+        border: 0.3vw solid #000000!important;
+    }
+
+    .opponent {
+        margin-top: 1vh;
+        height: 7vw;
+        width: 4vh;
+        margin-left: 3vw;
+        -webkit-filter: drop-shadow(0.4vw 0.4vw 0.3vw rgba(0,0,0,0.4));
+        -moz-filter: drop-shadow(0.4vw 0.4vw 0.3vw rgba(0,0,0,0.4));
+        -ms-filter: drop-shadow(0.4vw 0.4vw 0.3vw rgba(0,0,0,0.4));
+        -o-filter: drop-shadow(0.4vw 0.4vw 0.3vw rgba(0,0,0,0.4));
+        filter: drop-shadow(0.4vw 0.4vw 0.3vw rgba(0,0,0,0.4));
+    }
+    
+    .opponent:hover {
+        -webkit-filter: drop-shadow(0.3vw 0.3vw 0.3vw rgba(0,0,0,0.6));
+        -moz-filter: drop-shadow(0.3vw 0.3vw 0.3vw rgba(0,0,0,0.6));
+        -ms-filter: drop-shadow(0.3vw 0.3vw 0.3vw rgba(0,0,0,0.6));
+        -o-filter: drop-shadow(0.3vw 0.3vw 0.3vw rgba(0,0,0,0.6));
+        filter: drop-shadow(0.3vw 0.3vw 0.3vw rgba(0,0,0,0.6)); 
+    }
+    
+    .opponent:active {
+        -webkit-filter: drop-shadow(0.2vw 0.2vw 0.3vw rgba(1,1,1,1));
+        -moz-filter: drop-shadow(0.2vw 0.2vw 0.3vw rgba(1,1,1,1));
+        -ms-filter: drop-shadow(0.2vw 0.2vw 0.3vw rgba(1,1,1,1));
+        -o-filter: drop-shadow(0.2vw 0.2vw 0.3vw rgba(1,1,1,1));
+        filter: drop-shadow(0.2vw 0.2vw 0.3vw rgba(1,1,1,1)); 
+    }
+    
+    .opponentSelected {
+        outline: 0.3vw solid #000000;
+        outline-offset: 0.2vw;
+    }
+    
+    button {
+        box-shadow:0.4vw 0.4vw 0.3vw rgba(0,0,0,0.4);
+    }
+    
+    button:hover {
+        box-shadow:0.3vw 0.3vw 0.5vw rgba(0,0,0,0.7);
+    }
+    
+    button:active {
+        box-shadow:0.2vw 0.2vw 0.3vw rgba(0,0,0,1);
     }
 }
 
