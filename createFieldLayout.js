@@ -391,6 +391,15 @@ function selectColor(event) {
 //Нормализация имени пользователя(удаление пробелов в начале и в конце имени)
 function nameNormalization(event) {
     event.target.value = event.target.value.replace(/^\s+|\s+$/g, '');
+    if(event.target.value === '') {
+        const settings = JSON.parse(localStorage.getItem('settings'));
+        if(event.target.name === 'player1Name') {
+            event.target.value = settings.player1Name;
+        }
+        if(event.target.name === 'player2Name') {
+            event.target.value = settings.player2Name;
+        }
+    }
 }
 
 //Функция связывает input[type="radio"] с соответствующей ему картинкой оппонента 
@@ -1101,4 +1110,24 @@ function resizeWindow() {
         addDropsVisually(field);
     }, 50);
 }
+
+let height = window.innerHeight;
+
+document.querySelectorAll('.settings input[type=text]').forEach( (elem) => {
+    elem.addEventListener('focus', (event) => {
+        if(window.innerHeight < height) {
+            document.querySelector('.rules').style.height = '140vh';
+        }
+    });
+} );
+
+document.querySelectorAll('.settings input[type=text]').forEach( (elem) => {
+    elem.addEventListener('blur', (event) => {
+        if(window.innerHeight = height) {
+            document.querySelector('.rules').style.height = '';
+        }
+    });
+} );
+
+
  
