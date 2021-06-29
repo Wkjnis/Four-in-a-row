@@ -1,0 +1,91 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible" content="IE=edge")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        title Four in a row
+        link(href="style.css" rel="stylesheet")
+        link(rel="shortcut icon" href="img/red_chip.svg" type="image/png")
+    body
+        div.startScreen.modal
+            div.settings
+                form(name="settings")
+                    p Настройки:
+                    fieldset
+                        legend Первый игрок
+                        p Имя:
+                        input(name="player1Name" type="text" maxlength="10" value="")
+                        p Цвет фишек:
+                        div.radioCircle(data-name="player1Color" data-value="red")
+                        div.radioCircle(data-name="player1Color" data-value="yellow")
+                        div.radioCircle(data-name="player1Color" data-value="green")
+                        div.radioCircle(data-name="player1Color" data-value="purple")
+                        input(name="player1Color" type="radio" value="red")
+                        input(name="player1Color" type="radio" value="yellow")
+                        input(name="player1Color" type="radio" value="green")
+                        input(name="player1Color" type="radio" value="purple")
+                    fieldset
+                        legend Второй игрок
+                        p Имя:
+                        input(name="player2Name" type="text" maxlength="10" value="")
+                        p Цвет фишек:
+                        div.radioCircle(data-name="player2Color" data-value="red")
+                        div.radioCircle(data-name="player2Color" data-value="yellow")
+                        div.radioCircle(data-name="player2Color" data-value="green")
+                        div.radioCircle(data-name="player2Color" data-value="purple")
+                        input(name="player2Color" type="radio" value="red")
+                        input(name="player2Color" type="radio" value="yellow")
+                        input(name="player2Color" type="radio" value="green")
+                        input(name="player2Color" type="radio" value="purple")
+                    p#VS Игра против:
+                    img(data-name="opponent" data-value="human" class="opponent" src="img/human.svg" alt="human")
+                    img(data-name="opponent" data-value="computer" class="opponent" src="img/computer.svg" alt="computer")
+                    input(name="opponent" type="radio" value="human")
+                    input(name="opponent" type="radio" value="computer")
+                    button(type="button") Начать игру
+            div.rules 
+                p Правила игры:
+                p Игроки ходят по очереди, за ход можно бросить только одну фишку.
+                p Нажмите на иконку фишки вверху, чтобы бросит фишку в соответствующий столбец.
+                p Цель игры: собрать 4 фишки в ряд по диогонали или по вертикали, или по горизонтали. После этого вы победите.
+                p Не забывайте мешать оппоненту сделать тоже самое!
+                p Будьте внимательны, иногда оппонент может победить совсем неочевидным образом.
+                p Удачи и веселой игры! :)
+        div.score
+            div#player1Score
+            div#player2Score
+        div.buttons
+            button#restart(type="button") Заново
+            button#settings(type="button") Настройки
+            button#concede(type="button") Сдаться
+            button#showButtons(type="button") 
+                img(src="img/arrow.svg" alt="arrow")
+        div.drops
+        div.field
+        div.winScreen.modal
+            div#winningPlayer
+            button(type="button" id="playAnotherGame") Следующяя игра
+            button(type="button" id="showField") Просмотр игрового поля
+        div.popup
+            p#popupQuestion
+            p#popupText
+            button#popupYes(data-answer="yes" type="button")
+            button#popupNo(data-answer="no" type="button")
+        div.links
+            div.mainLinks
+                span#animTop
+                span#animBottom
+                span#animRight
+                a(href="https://github.com/Wkjnis/Four-in-a-row" target="_blank")
+                    img(src="img/github.svg" alt="GitHub")
+            div.otherLinksContainer
+                p Источники SVG иконок:
+                div.otherLinks
+                    a(href="https://www.flaticon.com" target="_blank")
+                        img(src="img/flaticon.svg" alt="flaticon")
+                    a(href="https://icons8.ru" target="_blank")
+                        img(src="img/icons8.svg" alt="icons8")
+                    a(href="https://ru.freepik.com" target="_blank")
+                        img(src="img/freepik.svg" alt="freepik")
+        script(src="script.js")
