@@ -130,7 +130,7 @@ function chipDrop(event) {
 
         //Функция для отрисовки прогресса анимации
         function draw(progress) {
-            if( window.innerHeight >= window.innerWidth) {
+            if(window.innerHeight >= window.innerWidth) {
                 chip.style.top = progress*11*(fieldRow+1) + progress*3 + 'vw';
             } else {
                 chip.style.top = progress*11*(fieldRow+1) + progress*3 + 'vh';
@@ -144,7 +144,7 @@ function chipDrop(event) {
         function bounce(timeFraction) {
             //Цикл не бесконечный, он сработает максимум 4 раза (зависит от того в ком моменте анимации он вызывается)
             for (let a = 0, b = 1;; a += b, b /= 2) {
-                if ((1 - timeFraction) >= (7 - 4 * a) / 11) {
+                if((1 - timeFraction) >= (7 - 4 * a) / 11) {
                     return 1 - (-Math.pow((11 - 6 * a - 11 * (1 - timeFraction)) / 4, 2) + Math.pow(b, 2));
                 }
             }
@@ -155,13 +155,13 @@ function chipDrop(event) {
             let start = performance.now();
             requestAnimationFrame(function animateFrame(time) {
                 let timeFraction = (time - start) / duration;
-                if (timeFraction > 1)timeFraction = 1;
+                if(timeFraction > 1)timeFraction = 1;
                 let progress = timing(timeFraction);
                 draw(progress);
-                if (timeFraction < 1) {
+                if(timeFraction < 1) {
                     requestAnimationFrame(animateFrame);
                 }
-                if ( timeFraction == 1 ) {
+                if( timeFraction == 1 ) {
                     resolve('done');
                 }
             });
@@ -191,7 +191,7 @@ function chipDrop(event) {
 
         //Если 2 игрок это компьютер, то делаем его ход
         if((currentPlayer.type === 'computer') && !gameEnded) {
-            makeComputerTurn();
+            makeComputerTurn(dropsIndex);
         }
     } );
 }
@@ -255,7 +255,7 @@ function isGameEnd(fieldRow, dropsIndex) {
     let startRow = fieldRow;
     let startColumn = dropsIndex - 3;
     let chipColor = fieldArray[fieldRow][dropsIndex];
-    for(let i = 0; i <= 3; i++) {
+    for( let i = 0; i <= 3; i++ ) {
         if( fieldArray[startRow][startColumn + i] == chipColor && 
             fieldArray[startRow][startColumn + 1 + i] == chipColor &&
             fieldArray[startRow][startColumn + 2 + i] == chipColor &&
@@ -268,7 +268,7 @@ function isGameEnd(fieldRow, dropsIndex) {
     //Проверка вертикали
     startRow = fieldRow - 3;
     startColumn = dropsIndex;
-    for(let i = 0; i <= 3; i++) {
+    for( let i = 0; i <= 3; i++ ) {
         if( (fieldArray[startRow + i] && fieldArray[startRow + i][startColumn]) == chipColor && 
             (fieldArray[startRow + 1 + i] && fieldArray[startRow + 1 + i][startColumn]) == chipColor &&
             (fieldArray[startRow + 2 + i] && fieldArray[startRow + 2 + i][startColumn]) == chipColor &&
@@ -276,43 +276,25 @@ function isGameEnd(fieldRow, dropsIndex) {
                 win(currentPlayer);
                 return true;
         }
-        /* Тоже самое, что и выше, но через опциональную цепочку
-        if( fieldArray[startRow + i]?.[startColumn] == chipColor && 
-            fieldArray[startRow + 1 + i]?.[startColumn] == chipColor &&
-            fieldArray[startRow + 2 + i]?.[startColumn] == chipColor &&
-            fieldArray[startRow + 3 + i]?.[startColumn] == chipColor) {
-                win(currentPlayer);
-                return true;
-        }
-        */
     }
 
     //Проверка главной диагонали
     startRow = fieldRow - 3;
     startColumn = dropsIndex - 3;
-    for(let i = 0; i <= 3; i++) {
+    for( let i = 0; i <= 3; i++ ) {
         if( (fieldArray[startRow + i] && fieldArray[startRow + i][startColumn + i]) == chipColor && 
             (fieldArray[startRow + 1 + i] && fieldArray[startRow + 1 + i][startColumn + 1 + i]) == chipColor &&
             (fieldArray[startRow + 2 + i] && fieldArray[startRow + 2 + i][startColumn + 2 + i]) == chipColor &&
             (fieldArray[startRow + 3 + i] && fieldArray[startRow + 3 + i][startColumn + 3 + i]) == chipColor) {
                 win(currentPlayer);
-                return;
-        }
-        /* Тоже самое, что и выше, но через опциональную цепочку
-        if( fieldArray[startRow + i]?.[startColumn + i] == chipColor && 
-            fieldArray[startRow + 1 + i]?.[startColumn + 1 + i] == chipColor &&
-            fieldArray[startRow + 2 + i]?.[startColumn + 2 + i] == chipColor &&
-            fieldArray[startRow + 3 + i]?.[startColumn + 3 + i] == chipColor) {
-                win(currentPlayer);
                 return true;
         }
-        */
     }
     
     //Проверка побочной диагонали
     startRow = fieldRow - 3;
     startColumn = dropsIndex + 3;
-    for(let i = 0; i <= 3; i++) {
+    for( let i = 0; i <= 3; i++ ) {
         if( (fieldArray[startRow + i] && fieldArray[startRow + i][startColumn - i]) == chipColor && 
             (fieldArray[startRow + 1 + i] && fieldArray[startRow + 1 + i][startColumn - 1 - i]) == chipColor &&
             (fieldArray[startRow + 2 + i] && fieldArray[startRow + 2 + i][startColumn - 2 - i]) == chipColor &&
@@ -320,15 +302,6 @@ function isGameEnd(fieldRow, dropsIndex) {
                 win(currentPlayer);
                 return true;
         }
-        /* Тоже самое, что и выше, но через опциональную цепочку
-        if( fieldArray[startRow + i]?.[startColumn - i] == chipColor && 
-            fieldArray[startRow + 1 + i]?.[startColumn - 1 - i] == chipColor &&
-            fieldArray[startRow + 2 + i]?.[startColumn - 2 - i] == chipColor &&
-            fieldArray[startRow + 3 + i]?.[startColumn - 3 - i] == chipColor) {
-                win(currentPlayer);
-            return true;
-        }
-        */
     }
 
     //Проверка на ничью
@@ -472,6 +445,8 @@ function startGame() {
     enableAllDropsIfFull();
     //Очищаем массив поля в localStorage
     localStorage.removeItem('field');
+    //И другие служебные переменные
+    localStorage.removeItem('blockArray');
     localStorage.setItem('player1Starts', true);
     //Заменяем стандартные фишки внутри .drops на пользовательскте
     document.querySelectorAll('.started').forEach( (dropsElem) => {
@@ -541,11 +516,230 @@ function setDefaultSettings() {
 }
 
 //Реализуем ход компьютера
-function makeComputerTurn() {
-    //НЕ РЕАЛИЗОВАННО
+function makeComputerTurn(lastDropsIndex) {
+
+    //Функция блокирует столбец, если ход в него приведет к плохим последствиям:
+    //(поражение на следующий ход или даст противнику возможность помешать победить)
+    function blockColumn(firstTurnPlayerColor, secondTurnPlayerColor, weight) {
+        for( let col = 0; col <= 6; col++ ) {
+            if( !dropsArray[col] ) {
+                continue;
+            }
+            let row = getHigestEmptyCell(col);
+            if( row === 0 ) {
+                continue;
+            }
+            fACopy[row][col] = firstTurnPlayerColor;
+            fACopy[row - 1][col] = secondTurnPlayerColor;
+            if( canGameEnd(row - 1, col) ) {
+                fACopy[row][col] = 0;
+                fACopy[row - 1][col] = 0;
+                makeComputerTurn._blockArray[col] = weight;
+                continue;
+            }
+            fACopy[row][col] = 0;
+            fACopy[row - 1][col] = 0;
+        }   
+    }
+
+    //Функция проверяет может ли игрок с цветом фишек color выиграть
+    //Если может, то в переменную result записывается номер колонки, в которую нужно брость фишку для победы
+    function canPlayerWin(color) {
+        for( let col = 0; col <= 6; col++ ) {
+            if( !dropsArray[col] ) {
+                continue;
+            }
+            let row = getHigestEmptyCell(col);
+            fACopy[row][col] = color;
+            if( canGameEnd(row, col) ) {
+                fACopy[row][col] = 0;
+                result = col;
+                break;
+            }
+            fACopy[row][col] = 0;
+        }       
+    }
+
+    //Функция делает ход, если он был найден и возвращает true, иначе false
+    function makeTurnIfFound() {
+        if( result !== null ) {
+            const eventClick = new Event('click');
+            document.querySelector(`.drop_${result}`).dispatchEvent(eventClick);
+            makeComputerTurn._blockArray[result] = 1;
+            result = null;
+            return true;
+        }
+        return false;
+    }
+
+    //Проверяет возможность победы при броске фишки в столбец dropsIndex
+    function canGameEnd(fieldRow, dropsIndex) {
+        //Проверка горизонтали
+        let startRow = fieldRow;
+        let startColumn = dropsIndex - 3;
+        let chipColor = fACopy[fieldRow][dropsIndex];
+        for( let i = 0; i <= 3; i++ ) {
+            if( fACopy[startRow][startColumn + i] == chipColor && 
+                fACopy[startRow][startColumn + 1 + i] == chipColor &&
+                fACopy[startRow][startColumn + 2 + i] == chipColor &&
+                fACopy[startRow][startColumn + 3 + i] == chipColor) {
+                    return true;
+            }
+        }
+        //Проверка вертикали
+        startRow = fieldRow - 3;
+        startColumn = dropsIndex;
+        for( let i = 0; i <= 3; i++ ) {
+            if( (fACopy[startRow + i] && fACopy[startRow + i][startColumn]) == chipColor && 
+                (fACopy[startRow + 1 + i] && fACopy[startRow + 1 + i][startColumn]) == chipColor &&
+                (fACopy[startRow + 2 + i] && fACopy[startRow + 2 + i][startColumn]) == chipColor &&
+                (fACopy[startRow + 3 + i] && fACopy[startRow + 3 + i][startColumn]) == chipColor) {
+                    return true;
+            }
+        }
+        //Проверка главной диагонали
+        startRow = fieldRow - 3;
+        startColumn = dropsIndex - 3;
+        for( let i = 0; i <= 3; i++ ) {
+            if( (fACopy[startRow + i] && fACopy[startRow + i][startColumn + i]) == chipColor && 
+                (fACopy[startRow + 1 + i] && fACopy[startRow + 1 + i][startColumn + 1 + i]) == chipColor &&
+                (fACopy[startRow + 2 + i] && fACopy[startRow + 2 + i][startColumn + 2 + i]) == chipColor &&
+                (fACopy[startRow + 3 + i] && fACopy[startRow + 3 + i][startColumn + 3 + i]) == chipColor) {
+                    return true;
+            }
+        }  
+        //Проверка побочной диагонали
+        startRow = fieldRow - 3;
+        startColumn = dropsIndex + 3;
+        for( let i = 0; i <= 3; i++ ) {
+            if( (fACopy[startRow + i] && fACopy[startRow + i][startColumn - i]) == chipColor && 
+                (fACopy[startRow + 1 + i] && fACopy[startRow + 1 + i][startColumn - 1 - i]) == chipColor &&
+                (fACopy[startRow + 2 + i] && fACopy[startRow + 2 + i][startColumn - 2 - i]) == chipColor &&
+                (fACopy[startRow + 3 + i] && fACopy[startRow + 3 + i][startColumn - 3 - i]) == chipColor) {
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    //Функция проверяет есть ли возможные ходы, и если нет, то делает их
+    function makeTurnPossible() {
+        //Если есть возможный ход, то ничего не делаем
+        for( let i = 0; i <= 6; i++ ){
+            if( possibleTurns[i] === true ) {
+                return;
+            }
+        }
+        //Наибольший вес среди заблокированных столбцов (из отрицательных весов)
+        let maxNegativeWeight = null;
+
+        makeComputerTurn._blockArray.forEach( (elem) => {
+            //Если столбец заблокирован
+            if( elem < 0 ) {
+                //Если еще не найден наибольший отрицательный вес, то выбираем этот 
+                if( maxNegativeWeight === null ) {
+                    maxNegativeWeight = elem;
+                }
+                //Если вес отрицательный и при этом больше maxNegativeWeight, то предпочтем наибольший
+                maxNegativeWeight = elem > maxNegativeWeight ? elem : maxNegativeWeight;
+            }
+        } );
+
+        //Разблокируем все столбцы с наибольшим отрицательным весом
+        makeComputerTurn._blockArray.forEach( (elem, index) => {
+            if( elem === maxNegativeWeight ){
+                possibleTurns[index] = true;
+            }
+        } );
+    }
+
+    //Создаем массив не заблокированных колонок, если его нет
+    if( !makeComputerTurn._blockArray ) {
+        //В этом массиве 1 значит, что столбез не заблокирован (true)
+        //Чем меньше элемент массива, тем менене охотно компьютер будет брость фишку в соответствующий столбец
+        makeComputerTurn._blockArray = [1, 1, 1, 1, 1, 1, 1];
+    }
+
+    //Если противник сходил в заблокированный столбец, то он разблокируется
+    if( makeComputerTurn._blockArray[lastDropsIndex] < 0 ) {
+        makeComputerTurn._blockArray[lastDropsIndex] = 1;  
+    }
+
+    //Копируем fieldArray
+    let fACopy = [
+        [...fieldArray[0]],
+        [...fieldArray[1]],
+        [...fieldArray[2]],
+        [...fieldArray[3]],
+        [...fieldArray[4]],
+        [...fieldArray[5]]
+    ];
+
+    //Блокируем для хода столбцы, если нужно
+    //Противник сможет помешать поставить 4 в ряд с весом -1
+    blockColumn(1, 2, -1);
+    //Поражение на следующий ход с весом -2
+    blockColumn(2, 1, -2);
+
+    //Сохраняем массив заблокированных столбцов
+    localStorage.setItem('blockArray', JSON.stringify(makeComputerTurn._blockArray));  
+    
+    //Переменная в которыую запишется номер столбца, в который нужно бросить фишку
+    let result = null;
+
+    //Проверяем может ли компьютер немедленно выиграть
+    canPlayerWin(2);
+    
+    //Если ход найден, то делаем его и завершаем работу функции
+    if( makeTurnIfFound() ) {
+        return;
+    }
+
+    //Проверяем может ли оппонент компьютера выиграть на следующий ход
+    canPlayerWin(1);
+    
+    //Если ход найден, то делаем его и завершаем работу функции
+    if( makeTurnIfFound() ) {
+        return;
+    }
+    //Проблемы здесь!!!!!!
+    //Массив возможных столбцов для хода
+    let possibleTurns = [true, true, true, true, true, true, true];
+
+    //Убираем из возможных ходов заполненые столбцы
+    dropsArray.forEach( (elem, index) => {
+        if( elem === false ) {
+            possibleTurns[index] = false;
+        }
+    } );
+
+    //Убираем из возможных ходов заблокированные столбцы
+    makeComputerTurn._blockArray.forEach( (elem, index) => {
+        if( elem < 0 ) {
+            possibleTurns[index] = false;
+        }
+    } );
+
+    //Разблокируем некоторые столбцы, если все заблокированны или заполнены
+    makeTurnPossible();
+
+    //Массив индексов столбцов, куда можно сходить
+    let possibleTurnsIndexes = [];
+
+    //Заполняем массив possibleTurnsIndexes индексами столбцов, куда можно сходить
+    possibleTurns.forEach( (elem, index) => {
+        if( elem === true ) {
+            possibleTurnsIndexes.push(index);
+        }
+    } );
+
+    //Создаем событие 'click'
     const eventClick = new Event('click');
-    let randomNumberFrom0To6 =  Math.floor(Math.random() * 7);
-    document.querySelector(`.drop_${randomNumberFrom0To6}`).dispatchEvent(eventClick);
+
+    //Выбираем с равной вероятностью индекс одного из столбцов, куда можно сделать ход
+    let randomElemOfPossibleTurnsIndexes =  Math.floor(Math.random() * possibleTurnsIndexes.length);
+    //И делаем ход
+    document.querySelector(`.drop_${possibleTurnsIndexes[randomElemOfPossibleTurnsIndexes]}`).dispatchEvent(eventClick);
 }
 
 function computerFirstTurn() {
@@ -822,6 +1016,8 @@ function playAnotherGame() {
     clearDropsArray();
     enableAllDropsIfFull();
     updateScore();
+    makeComputerTurn._blockArray = null;
+    localStorage.removeItem('blockArray');
     //Меняем игрока, передаем право первого хода
     if(!currentPlayer.startFirst) {
         changePlayer();
@@ -952,6 +1148,10 @@ function load() {
             if(!JSON.parse(localStorage.getItem('player1Starts'))) {
                 player1.startFirst = false;
                 player2.startFirst = true;
+            }
+            //Обновляем массив заблокированных столбцов
+            if( localStorage.getItem('blockArray') ) {
+                makeComputerTurn._blockArray = JSON.parse(localStorage.getItem('blockArray'));
             }
             //Обновляем счет
             const score = JSON.parse(localStorage.getItem('score'));
