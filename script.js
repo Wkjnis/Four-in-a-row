@@ -1255,7 +1255,19 @@ function hideWinScreen() {
 //Функция расставляет фишки по ячейкам визуально из двумерного массива field из localStorage
 //В качестве аргумента принимает спарсеный массив field(необходимо предварительно спарсить его)
 function addDropsVisually(field) {
-    if(field !== null) {
+    if(field !== null || document.querySelector('.winScreen').style.display === 'grid') {
+
+        if(document.querySelector('.winScreen').style.display === 'grid') {
+            field = [
+                [...fieldArray[0]],
+                [...fieldArray[1]],
+                [...fieldArray[2]],
+                [...fieldArray[3]],
+                [...fieldArray[4]],
+                [...fieldArray[5]]
+            ];
+        }
+        
         field.forEach( (arr, row) => {
             arr.forEach( (elem, column) => {
                 if(elem === 0) {
